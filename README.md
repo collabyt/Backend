@@ -1,3 +1,3 @@
-# Backend
+# Backend   
+![Build Badge](https://github.com/collabyt/Backend/workflows/Go/badge.svg)   
 CollabYT backend
-![Build Badge](https://github.com/collabyt/Backend/workflows/Go/badge.svg)
