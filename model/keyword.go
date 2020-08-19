@@ -1,18 +1,14 @@
 package model
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 // Keyword :
 // represent a single keyword database object with his own ID.
 type Keyword struct {
 	ID   int    `json:"id"`
 	Word string `json:"keyword"`
-}
-
-// Keywords :
-// represent a list of keyword objects with their respective ID's.
-type Keywords struct {
-	Words []Keyword
 }
 
 // CreateKeyword :
@@ -38,11 +34,4 @@ func CreateKeyword(db *sql.DB, word string) (Keyword, error) {
 		return Keyword{}, err
 	}
 	return k, nil
-}
-
-// GetKeywordsByPartialWord :
-// returns a list of keyword with a maximum amount of 10.
-func GetKeywordsByPartialWord(partialWord string) (Keywords, error) {
-	var ks Keywords
-	return ks, nil
 }

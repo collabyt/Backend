@@ -26,7 +26,7 @@ func main() {
 	r.HandleFunc("/api/v1/keyword", handler.Keyword) // POST
 
 	// Multiple Keywords operations
-	// r.HandleFunc("/api/v1/keywords/", handler.GetKeywords) // GET
+	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords) // GET
 
 	// Serve static Pages
 	fs := http.FileServer(http.Dir("./static"))
