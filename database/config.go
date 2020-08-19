@@ -1,12 +1,19 @@
 package database
 
 var (
-	DbHost     = "localhost"
-	DbUser     = "postgres"
+	// DbHost : Postgres Host
+	DbHost = "localhost"
+	// DbUser : Postgres username
+	DbUser = "postgres"
+	// DbPassword : password to db
 	DbPassword = "postgres"
+	// DbDatabase : name of the database
 	DbDatabase = "collabyt"
-	DbPort     = "5432"
+	// DbPort : post open in the postgres server
+	DbPort = "5432"
 
-	DbSsl    = "disable"
+	// DbSsl : should ssl be active or not
+	DbSsl = "disable"
+	// DbSource : Source of the database
 	DbSource = "postgres"
 )

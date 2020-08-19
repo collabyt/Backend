@@ -15,7 +15,8 @@ var (
 	DB *sql.DB
 )
 
-// Connect to the postgres database using the environment variables.
+// Connect :
+// open a connection to the postgres database using the environment variables.
 func Connect() {
 	dbInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		postgres.DbHost, postgres.DbPort, postgres.DbUser, postgres.DbPassword, postgres.DbDatabase, postgres.DbSsl)
