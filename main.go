@@ -16,7 +16,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// Single playlist operations
-	// r.HandleFunc("/api/v1/playlist/:playlist", handler.Playlist) // GET
+	r.HandleFunc("/api/v1/playlist/:playlist", handler.Playlist) // GET & POST
 	// r.HandleFunc("/api/v1/video", handler.Video)                 // POST
 
 	// Multiple playlists operations

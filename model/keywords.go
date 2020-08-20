@@ -17,11 +17,9 @@ func GetKeywordsByPartialWord(db *sql.DB, partialWord string) (Keywords, error) 
 	if err != nil {
 		return Keywords{}, err
 	}
-	var (
-		ks Keywords
-		k  Keyword
-	)
+	var ks Keywords
 	for rows.Next() {
+		var k Keyword
 		rows.Scan(&k.ID, &k.Word)
 		ks.Words = append(ks.Words, k)
 	}
