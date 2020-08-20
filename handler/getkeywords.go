@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
@@ -31,7 +30,6 @@ func GetKeywords(w http.ResponseWriter, r *http.Request) {
 		w.Write(errRet)
 		return
 	}
-	fmt.Println("chegou aqui")
 	jsonResponse, _ := json.Marshal(wordList)
 	w.Write(jsonResponse)
 }
