@@ -16,17 +16,17 @@ func main() {
 	r := mux.NewRouter()
 
 	// Single playlist operations
-	r.HandleFunc("/api/v1/playlist/:playlist", handler.Playlist) // GET & POST
+	//r.HandleFunc("/api/v1/playlist", handler.CreateOrGetPlaylist) // GET & POST
 	// r.HandleFunc("/api/v1/video", handler.Video)                 // POST
 
 	// Multiple playlists operations
 	// r.HandleFunc("/api/v1/playlists/", handler.LatestPlaylists) // GET (keyword, afterid)
 
 	// Single Keyword operations
-	r.HandleFunc("/api/v1/keyword", handler.Keyword) // POST
+	r.HandleFunc("/api/v1/keyword", handler.CreateOrGetKeyword) // POST
 
 	// Multiple Keywords operations
-	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords) // GET
+	r.HandleFunc("/api/v1/keywords", handler.GetKeywords) // GET
 
 	// Serve static Pages
 	fs := http.FileServer(http.Dir("./static"))
