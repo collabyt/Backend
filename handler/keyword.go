@@ -9,9 +9,10 @@ import (
 	"github.com/collabyt/Backend/model"
 )
 
-// Keyword :
-// insert a new keyword to the database, if it already exists, returns the existing one.
-func Keyword(w http.ResponseWriter, r *http.Request) {
+// CreateOrGetKeyword :
+// insert a new keyword to the database, if it already exists, returns the
+// existing one.
+func CreateOrGetKeyword(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -20,21 +21,27 @@ func Keyword(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(model.Error{Description: err.Error()})
+		errRet, _ := json.Marshal(
+			model.Error{Description: err.Error()},
+		)
 		w.Write(errRet)
 		return
 	}
 	var word model.Keyword
 	if err = json.Unmarshal(body, &word); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(model.Error{Description: err.Error()})
+		errRet, _ := json.Marshal(
+			model.Error{Description: err.Error()},
+		)
 		w.Write(errRet)
 		return
 	}
 	word, err = model.CreateKeyword(database.DB, word.Word)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(model.Error{Description: err.Error()})
+		errRet, _ := json.Marshal(
+			model.Error{Description: err.Error()},
+		)
 		w.Write(errRet)
 		return
 	}

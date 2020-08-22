@@ -19,7 +19,9 @@ func GetKeywords(w http.ResponseWriter, r *http.Request) {
 	addressParams := r.URL.Query()
 	if len(addressParams["likewise"]) < 1 || len(addressParams["likewise"][0]) < 2 {
 		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(model.Error{Description: "likewise string with at least two characters is mandatory"})
+		errRet, _ := json.Marshal(
+			model.Error{Description: "likewise string with at least two characters is mandatory"},
+		)
 		w.Write(errRet)
 		return
 	}

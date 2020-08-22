@@ -16,8 +16,15 @@ var (
 // Connect :
 // open a connection to the postgres database using the environment variables.
 func Connect() {
-	dbInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		DbHost, DbPort, DbUser, DbPassword, DbDatabase, DbSsl)
+	dbInfo := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		DbHost,
+		DbPort,
+		DbUser,
+		DbPassword,
+		DbDatabase,
+		DbSsl,
+	)
 	db, err := sql.Open(DbSource, dbInfo)
 	if err != nil {
 		panic(err)
