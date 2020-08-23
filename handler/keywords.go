@@ -12,10 +12,6 @@ import (
 // Return a list of (max 10) keywords to be used as part of a new playlist
 func GetKeywords(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	if r.Method != "GET" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
 	addressParams := r.URL.Query()
 	if len(addressParams["likewise"]) < 1 || len(addressParams["likewise"][0]) < 2 {
 		w.WriteHeader(http.StatusBadRequest)

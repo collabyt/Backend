@@ -9,15 +9,11 @@ import (
 	"github.com/collabyt/Backend/model"
 )
 
-// CreateOrGetKeyword :
+// CreateKeyword :
 // insert a new keyword to the database, if it already exists, returns the
 // existing one.
-func CreateOrGetKeyword(w http.ResponseWriter, r *http.Request) {
+func CreateKeyword(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	if r.Method != "POST" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)

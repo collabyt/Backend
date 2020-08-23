@@ -15,24 +15,20 @@ func main() {
 	// API routes
 	r := mux.NewRouter()
 
-	// Single playlist operations
-	//r.HandleFunc("/api/v1/playlist", handler.CreateOrGetPlaylist) // GET & POST
-	// r.HandleFunc("/api/v1/video", handler.Video)                 // POST
-
+	// Single Video operations
+	// r.HandleFunc("/api/v1/video", handler.Video).Methods("POST")
 	// Multiple playlists operations
-	// r.HandleFunc("/api/v1/playlists/", handler.LatestPlaylists) // GET (keyword, afterid)
+	// r.HandleFunc("/api/v1/playlists/", handler.LatestPlaylists).Methods("GET") // (keyword, afterid)
 
+	// Single playlist operations
+	r.HandleFunc("/api/v1/playlist", handler.CreatePlaylist).Methods("POST")
+	r.HandleFunc("/api/v1/playlist", handler.GetPlaylist).Methods("GET")
 	// Single Keyword operations
-	r.HandleFunc("/api/v1/keyword", handler.CreateOrGetKeyword) // POST
-
+	r.HandleFunc("/api/v1/keyword", handler.CreateKeyword).Methods("POST")
 	// Multiple Keywords operations
-	r.HandleFunc("/api/v1/keywords", handler.GetKeywords) // GET
-
-	// Serve static Pages
+	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET")
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
-
-	// Server initialization
 	err := http.ListenAndServe(":8080", r)
 	if err != nil {
 		panic(err)
