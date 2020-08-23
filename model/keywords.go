@@ -28,6 +28,37 @@ func GetKeywordsByPartialWord(db *sql.DB, partWord string) (Keywords, error) {
 		k  Keyword
 	)
 	for rows.Next() {
+		rows.Scan(&k.ID, &k.Word)
+		ks.Words = append(ks.Words, k)
+	}
+	return ks, nil
+}
+
+// GetKeywordsByID :
+// Given a slice of id's, this will return a list a keywords with all keyword
+// from such slice.s
+func GetKeywordsByID(db *sql.DB, ids []int) (Keywords, error) {
+	var formattedIDsList string
+	for _, id := range ids {
+		if formattedIDsList != "" {
+			formattedIDsList += ", " + string(id)
+		} else {
+			formattedIDsList += string(id)
+		}
+	}
+	formattedIDsList = "(" + formattedIDsList + ")"
+	rows, err := db.Query(
+		`SELECT id, word FROM keyword WHERE id IN $1;`,
+		formattedIDsList,
+	)
+	if err != nil {
+		return Keywords{}, err
+	}
+	var (
+		k  Keyword
+		ks Keywords
+	)
+	for rows.Next() {
 		rows.Scan(&k)
 		ks.Words = append(ks.Words, k)
 	}

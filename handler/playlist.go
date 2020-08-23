@@ -1,11 +1,18 @@
 package handler
 
-import "net/http"
+import (
+	"net/http"
+)
 
-// CreateOrGetPlaylist :
-// Return a playlist given it's id (playlist parameter). It returns an empty
-// playlist if given playlist is protected, unless already allowed by a session
-// cookie or a valid password is sent.
-func CreateOrGetPlaylist(w http.ResponseWriter, r *http.Request) {
+// CreatePlaylist :
+// Insert a new playlist in the database based on the data delivered in JSON
+// format.
+func CreatePlaylist(w http.ResponseWriter, r *http.Request) {
+
+}
+
+// GetPlaylist :
+// Get a playlist given the ID passed in the URI
+func GetPlaylist(w http.ResponseWriter, r *http.Request) {
 
 }

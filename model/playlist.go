@@ -3,6 +3,7 @@ package model
 import (
 	"database/sql"
 	"encoding/base64"
+	"fmt"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -44,19 +45,15 @@ func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
 // Create a new playlist, either public or private
 func CreatePlaylist(db *sql.DB, playlist Playlist) (Playlist, error) {
 	pass, err := bcrypt.GenerateFromPassword(
-		[]byte(
-			playlist.Passphrase,
-		),
-		14,
+		[]byte(playlist.Passphrase),
+		bcrypt.DefaultCost,
 	)
 	if err != nil {
 		return Playlist{}, err
 	}
 	playlist.Passphrase = string(pass)
 	playlist.PublicID = base64.StdEncoding.EncodeToString(
-		[]byte(
-			playlist.Name + time.Now().String(),
-		),
+		[]byte(playlist.Name + time.Now().String()),
 	)
 	row := db.QueryRow(
 		`INSERT INTO public.playlist
@@ -73,5 +70,17 @@ func CreatePlaylist(db *sql.DB, playlist Playlist) (Playlist, error) {
 	if err != nil {
 		return Playlist{}, err
 	}
+	var (
+		formattedInserts string
+	)
+	for _, pos := range playlist.Words.Words {
+		formattedInserts = fmt.Sprintf("(%d, %d),\n", p.ID, pos.ID)
+	}
+	_, err = db.Query(
+		`INSERT INTO public.playlist_keyword (playlist_id, keyword_id)
+		VALUES $1;`,
+		formattedInserts,
+	)
+	p.Words = playlist.Words
 	return p, nil
 }
