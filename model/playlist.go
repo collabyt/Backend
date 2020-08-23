@@ -74,7 +74,7 @@ func CreatePlaylist(db *sql.DB, playlist Playlist) (Playlist, error) {
 		formattedInserts string
 	)
 	for _, pos := range playlist.Words.Words {
-		formattedInserts = fmt.Sprintf("(%d, %d),\n", p.ID, pos.ID)
+		formattedInserts += fmt.Sprintf("(%d, %d),\n", p.ID, pos.ID)
 	}
 	_, err = db.Query(
 		`INSERT INTO public.playlist_keyword (playlist_id, keyword_id)
