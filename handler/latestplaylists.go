@@ -7,7 +7,9 @@ import (
 
 // LatestPlaylists :
 // Return a list of the next 10 public playlists from newest to oldest, starting from the lastid parameter
+// TODO LatestPlaylists: This is just a test for getting the parameters from the URL
 func LatestPlaylists(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
