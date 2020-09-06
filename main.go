@@ -16,7 +16,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// Single Video operations
-	// r.HandleFunc("/api/v1/video", handler.Video).Methods("POST")
+	// r.HandleFunc("/api/v1/video", handler.CreateVideo).Methods("POST")
 	// Multiple playlists operations
 	// r.HandleFunc("/api/v1/playlists/", handler.LatestPlaylists).Methods("GET") // (keyword, afterid)
 
