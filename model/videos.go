@@ -1,17 +1,13 @@
 package model
 
-import "database/sql"
-
-// Videos :
-// Refers to a list of the object Video.
-type Videos struct {
-	Videos []Video `json:"videos"`
-}
+import (
+	"database/sql"
+)
 
 // GetVideosByPlaylistID :
 // retrieve all videos that belong to a specific playlist using the id from the
 // database.
-func GetVideosByPlaylistID(db *sql.DB, playlistID int) (Videos, error) {
+func GetVideosByPlaylistID(db *sql.DB, playlistID int) ([]Video, error) {
 	vRows, err := db.Query(
 		`SELECT  id, name, link, unique_id, playlist_id 
 		FROM  public.video
@@ -19,15 +15,31 @@ func GetVideosByPlaylistID(db *sql.DB, playlistID int) (Videos, error) {
 		playlistID,
 	)
 	if err != nil {
-		return Videos{}, err
+		return []Video{}, err
 	}
-	var (
-		vs Videos
-		v  Video
-	)
+	var vs []Video
 	for vRows.Next() {
+		var v Video
 		vRows.Scan(&v)
-		vs.Videos = append(vs.Videos, v)
+		vs = append(vs, v)
 	}
 	return vs, nil
+}
+
+// CreateVideosFromPlaylist :
+// insert into the database all the videos inserted with the playlist. Returns
+// only nil or the error received from the database.
+func CreateVideosFromPlaylist(db *sql.DB, playlistID int, vs []Video) error {
+	stmt, err := db.Prepare("INSERT INTO public.video(name, link, unique_id, playlist_id) VALUES( $1, $2, $3, $4 )")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	for _, v := range vs {
+		_, err := stmt.Exec(v.Name, v.Link, v.UniqueID, playlistID)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

@@ -3,6 +3,8 @@ package main
 import (
 	"net/http"
 
+	"time"
+
 	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/handler"
 	"github.com/gorilla/mux"
@@ -21,15 +23,23 @@ func main() {
 	// r.HandleFunc("/api/v1/playlists/", handler.LatestPlaylists).Methods("GET") // (keyword, afterid)
 
 	// Single playlist operations
-	r.HandleFunc("/api/v1/playlist", handler.CreatePlaylist).Methods("POST")
-	r.HandleFunc("/api/v1/playlist", handler.GetPlaylist).Methods("GET")
+	r.HandleFunc("/api/v1/playlist", handler.CreatePlaylist).Methods("POST") // DONE
+	r.HandleFunc("/api/v1/playlist/", handler.GetPlaylist).Methods("GET")
 	// Single Keyword operations
-	r.HandleFunc("/api/v1/keyword", handler.CreateKeyword).Methods("POST")
+	r.HandleFunc("/api/v1/keyword", handler.CreateKeyword).Methods("POST") // DONE
 	// Multiple Keywords operations
-	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET")
+	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET") // DONE
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
-	err := http.ListenAndServe(":8080", r)
+
+	server := http.Server{
+		Addr:         ":8080",
+		Handler:      r,
+		IdleTimeout:  120 * time.Second,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
+	}
+	err := server.ListenAndServe()
 	if err != nil {
 		panic(err)
 	}
