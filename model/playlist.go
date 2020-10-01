@@ -17,7 +17,7 @@ type Playlist struct {
 	IsPublic   bool      `json:"public"`
 	Passphrase string    `json:"passphrase"`
 	Words      []Keyword `json:"keywords"`
-	Playlist   Videos    `json:"videos"`
+	Playlist   []Video   `json:"videos"`
 }
 
 // GetPlaylistByPublicID :
@@ -73,6 +73,10 @@ func CreatePlaylist(db *sql.DB, playlist Playlist) (Playlist, error) {
 		return Playlist{}, err
 	}
 	err = CreateKeywordsRelation(db, playlist.ID, playlist.Words)
+	if err != nil {
+		return Playlist{}, err
+	}
+	err = CreateVideosFromPlaylist(db, playlist.ID, playlist.Playlist)
 	if err != nil {
 		return Playlist{}, err
 	}

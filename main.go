@@ -21,12 +21,12 @@ func main() {
 	// r.HandleFunc("/api/v1/playlists/", handler.LatestPlaylists).Methods("GET") // (keyword, afterid)
 
 	// Single playlist operations
-	r.HandleFunc("/api/v1/playlist", handler.CreatePlaylist).Methods("POST")
-	r.HandleFunc("/api/v1/playlist", handler.GetPlaylist).Methods("GET")
+	r.HandleFunc("/api/v1/playlist", handler.CreatePlaylist).Methods("POST") // DONE
+	r.HandleFunc("/api/v1/playlist/", handler.GetPlaylist).Methods("GET")
 	// Single Keyword operations
-	r.HandleFunc("/api/v1/keyword", handler.CreateKeyword).Methods("POST")
+	r.HandleFunc("/api/v1/keyword", handler.CreateKeyword).Methods("POST") // DONE
 	// Multiple Keywords operations
-	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET")
+	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET") // DONE
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
 	err := http.ListenAndServe(":8080", r)
