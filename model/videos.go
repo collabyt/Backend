@@ -9,9 +9,10 @@ import (
 // database.
 func GetVideosByPlaylistID(db *sql.DB, playlistID int) ([]Video, error) {
 	vRows, err := db.Query(
-		`SELECT  id, name, link, unique_id, playlist_id 
+		`SELECT  name, link, unique_id
 		FROM  public.video
-		WHERE playlist_id = $1`,
+		WHERE playlist_id = $1
+		ORDER BY id`,
 		playlistID,
 	)
 	if err != nil {
@@ -20,7 +21,7 @@ func GetVideosByPlaylistID(db *sql.DB, playlistID int) ([]Video, error) {
 	var vs []Video
 	for vRows.Next() {
 		var v Video
-		vRows.Scan(&v)
+		vRows.Scan(&v.Name, &v.Link, &v.UniqueID)
 		vs = append(vs, v)
 	}
 	return vs, nil
