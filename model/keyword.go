@@ -46,3 +46,32 @@ func GetKeywordByID(db *sql.DB, id int) (Keyword, error) {
 	}
 	return k, nil
 }
+
+// GetKeywordsByPlaylistID :
+// Get all keywords that are associated with a given Playlist
+func GetKeywordsByPlaylistID(db *sql.DB, playlistID int) ([]Keyword, error) {
+	kRows, err := db.Query(
+		`SELECT 
+			k.id,
+			k.word
+		FROM 
+			playlist_keyword AS pk
+		INNER JOIN
+			keyword AS k
+		ON
+			pk.keyword_id = k.id
+		WHERE
+			pk.playlist_id = $1;`,
+		playlistID,
+	)
+	if err != nil {
+		return []Keyword{}, err
+	}
+	var ks []Keyword
+	for kRows.Next() {
+		var k Keyword
+		kRows.Scan(&k.ID, &k.Word)
+		ks = append(ks, k)
+	}
+	return ks, nil
+}

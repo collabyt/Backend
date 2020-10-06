@@ -11,11 +11,11 @@ import (
 //Playlist :
 // represent a single playlist to be created or reproduced
 type Playlist struct {
-	ID         int       `json:"id"`
-	PublicID   string    `json:"publicid"`
-	Name       string    `json:"name"`
-	IsPublic   bool      `json:"public"`
-	Passphrase string    `json:"passphrase"`
+	ID         int       `json:"id,omitempty"`
+	PublicID   string    `json:"publicid,omitempty"`
+	Name       string    `json:"name,omitempty"`
+	IsPublic   bool      `json:"public,omitempty"`
+	Passphrase string    `json:"passphrase,omitempty"`
 	Words      []Keyword `json:"keywords"`
 	Playlist   []Video   `json:"videos"`
 }
@@ -25,15 +25,27 @@ type Playlist struct {
 // data.
 func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
 	pRow := db.QueryRow(
-		`SELECT * FROM public.playlist WHERE public_id = $1;`,
+		`SELECT 
+			id,
+			public_id,
+			name,
+			is_public
+		FROM 
+			public.playlist 
+		WHERE 
+			public_id = $1;`,
 		publicID,
 	)
 	var p Playlist
-	err := pRow.Scan(&p)
+	err := pRow.Scan(&p.ID, &p.PublicID, &p.Name, &p.IsPublic)
 	if err != nil {
 		return Playlist{}, err
 	}
 	p.Playlist, err = GetVideosByPlaylistID(db, p.ID)
+	if err != nil {
+		return p, err
+	}
+	p.Words, err = GetKeywordsByPlaylistID(db, p.ID)
 	if err != nil {
 		return p, err
 	}

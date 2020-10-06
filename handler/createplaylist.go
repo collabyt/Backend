@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
@@ -33,6 +34,6 @@ func CreatePlaylist(w http.ResponseWriter, r *http.Request) {
 		w.Write(errRet)
 		return
 	}
-	http.Redirect(w, r, "/api/v1/playlist", http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/api/v1/playlists/%s", playlist.PublicID), http.StatusSeeOther)
 	return
 }
