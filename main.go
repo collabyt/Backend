@@ -22,14 +22,15 @@ func main() {
 	// Multiple playlists operations
 	// r.HandleFunc("/api/v1/playlists/", handler.LatestPlaylists).Methods("GET") // (keyword, afterid)
 
-	// Single playlist operations
+	// Playlist operations
 	r.HandleFunc("/api/v1/playlists", handler.CreatePlaylist).Methods("POST")             // DONE
 	r.HandleFunc("/api/v1/playlists/{pid}", handler.GetPlaylistByPublicID).Methods("GET") // DONE
-	r.HandleFunc("/api/v1/playlists", handler.GetPlaylist).Methods("GET")                 // TODO
-	// Single Keyword operations
+	r.HandleFunc("/api/v1/playlists", handler.GetPlaylists).Methods("GET")                // DONE
+	// Keyword operations
 	r.HandleFunc("/api/v1/keywords", handler.CreateKeyword).Methods("POST") // DONE
-	// Multiple Keywords operations
-	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET") // DONE
+	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET")   // DONE
+	// Video operations
+	r.HandleFunc("/api/v1/playlists/{pid}/Videos", handler.CreateVideoInPlaylist).Methods("POST") // TODO
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
 
