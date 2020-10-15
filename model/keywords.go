@@ -4,8 +4,7 @@ import (
 	"database/sql"
 )
 
-// GetKeywordsByPartialWord :
-// returns a list of keyword with a maximum amount of 10.
+// GetKeywordsByPartialWord returns a list of keyword with a maximum amount of 10.
 func GetKeywordsByPartialWord(db *sql.DB, partWord string) ([]Keyword, error) {
 	rows, err := db.Query(
 		`SELECT id, word FROM keyword 
@@ -28,9 +27,8 @@ func GetKeywordsByPartialWord(db *sql.DB, partWord string) ([]Keyword, error) {
 	return ks, nil
 }
 
-// GetKeywordsByID :
-// Given a slice of id's, this will return a list a keywords with all keyword
-// from such slice.s
+// GetKeywordsByID Given a slice of id's, this will return a list a keywords
+// with all keyword from such slice.
 func GetKeywordsByID(db *sql.DB, ids []int) ([]Keyword, error) {
 	var formattedIDsList string
 	for _, id := range ids {
@@ -57,8 +55,8 @@ func GetKeywordsByID(db *sql.DB, ids []int) ([]Keyword, error) {
 	return ks, nil
 }
 
-// GetKeywordsByPlaylistID :
-// Get all keywords that are associated with a given Playlist
+// GetKeywordsByPlaylistID get all keywords that are associated with a given
+// Playlist
 func GetKeywordsByPlaylistID(db *sql.DB, playlistID int) ([]Keyword, error) {
 	kRows, err := db.Query(
 		`SELECT 

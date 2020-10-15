@@ -9,8 +9,7 @@ import (
 	"github.com/collabyt/Backend/model"
 )
 
-// GetPlaylists :
-// Get a list of playlist based on the Limit and offset.
+// GetPlaylists returns a list of playlist based on the Limit and offset.
 func GetPlaylists(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	limitSlc, ok := r.URL.Query()["limit"]

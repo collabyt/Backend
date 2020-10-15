@@ -4,9 +4,8 @@ import (
 	"database/sql"
 )
 
-// GetVideosByPlaylistID :
-// retrieve all videos that belong to a specific playlist using the id from the
-// database.
+// GetVideosByPlaylistID retrieve all videos that belong to a specific playlist
+// using the id from the database.
 func GetVideosByPlaylistID(db *sql.DB, playlistID int) ([]Video, error) {
 	vRows, err := db.Query(
 		`SELECT  name, link, unique_id
@@ -27,9 +26,8 @@ func GetVideosByPlaylistID(db *sql.DB, playlistID int) ([]Video, error) {
 	return vs, nil
 }
 
-// CreateVideosFromPlaylist :
-// insert into the database all the videos inserted with the playlist. Returns
-// only nil or the error received from the database.
+// CreateVideosFromPlaylist insert into the database all the videos inserted
+// with the playlist. Returns only nil or the error received from the database.
 func CreateVideosFromPlaylist(db *sql.DB, playlistID int, vs []Video) error {
 	stmt, err := db.Prepare("INSERT INTO public.video(name, link, unique_id, playlist_id) VALUES( $1, $2, $3, $4 )")
 	if err != nil {

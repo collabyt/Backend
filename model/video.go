@@ -5,8 +5,7 @@ import (
 	"fmt"
 )
 
-// Video :
-// Refers to a video, which is a part of a playlist
+// Video refers to a video, which is a part of a playlist
 type Video struct {
 	ID         int    `json:"id,omitempty"`
 	PlaylistID int    `json:"playlistid,omitempty"`
@@ -15,9 +14,8 @@ type Video struct {
 	UniqueID   string `json:"uniqueid,omitempty"`
 }
 
-// CreateVideoInPlaylist :
-// Creates a video in the database including it's relation with the playlist to
-// which the video belongs
+// CreateVideoInPlaylist Creates a video in the database including it's relation
+// with the playlist to which the video belongs.
 func CreateVideoInPlaylist(db *sql.DB, v Video) (Video, bool) {
 	row := db.QueryRow(
 		`INSERT INTO public.video
@@ -34,8 +32,7 @@ func CreateVideoInPlaylist(db *sql.DB, v Video) (Video, bool) {
 	return v, err == nil
 }
 
-// DeleteVideo :
-// This function deletes a video from the database. For it to work, it must
+// DeleteVideo deletes a video from the database. For it to work, it must
 // be part of a specific playlist. Returns ok if file was found and deleted
 // without problems.
 func DeleteVideo(db *sql.DB, v Video) bool { //TODO

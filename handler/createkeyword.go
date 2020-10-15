@@ -8,9 +8,8 @@ import (
 	"github.com/collabyt/Backend/model"
 )
 
-// CreateKeyword :
-// insert a new keyword to the database, if it already exists, returns the
-// existing one.
+// CreateKeyword insert a new keyword to the database, if it already exists,
+// returns the existing one.
 func CreateKeyword(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var word model.Keyword

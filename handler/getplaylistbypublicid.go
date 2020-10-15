@@ -9,8 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// GetPlaylistByPublicID :
-// Returns a given playlist by it's public ID.
+// GetPlaylistByPublicID returns a given playlist by it's public ID.
 func GetPlaylistByPublicID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)

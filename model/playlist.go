@@ -8,8 +8,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-//Playlist :
-// represent a single playlist to be created or reproduced
+//Playlist represent a single playlist to be created or reproduced
 type Playlist struct {
 	ID         int       `json:"id,omitempty"`
 	PublicID   string    `json:"publicid,omitempty"`
@@ -20,9 +19,8 @@ type Playlist struct {
 	Playlist   []Video   `json:"videos"`
 }
 
-// GetPlaylistByPublicID :
-// Returns a single playlist to be shown in the webpage, including the video
-// data.
+// GetPlaylistByPublicID returns a single playlist including all it's videos
+// and keywords.
 func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
 	pRow := db.QueryRow(
 		`SELECT 
@@ -52,8 +50,7 @@ func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
 	return p, nil
 }
 
-// CreatePlaylist :
-// Create a new playlist, either public or private
+// CreatePlaylist create a new playlist, either public or private
 func CreatePlaylist(db *sql.DB, playlist Playlist) (Playlist, error) {
 	pass, err := bcrypt.GenerateFromPassword(
 		[]byte(playlist.Passphrase),

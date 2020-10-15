@@ -5,9 +5,8 @@ import (
 	"fmt"
 )
 
-// CreateKeywordsRelation :
-// Execute one single SQL instruction relating existing keywords from the
-// database with a unique Playlist.
+// CreateKeywordsRelation Execute one single SQL instruction relating existing
+// keywords from the database with a unique Playlist.
 func CreateKeywordsRelation(db *sql.DB, playlistID int, wordList []Keyword) error {
 	formattedInserts := "INSERT INTO public.playlist_keyword (playlist_id, keyword_id) VALUES "
 	for _, word := range wordList {

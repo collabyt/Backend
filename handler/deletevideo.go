@@ -11,13 +11,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// DeleteVideo :
-// This is the handler that takes care of the hability to delete a given video
-// from a specific playlist
+// DeleteVideo this is the handler that takes care of the hability to delete a
+// given video from a specific playlist
 func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
-	PublicID, _ := vars["pid"] // Public ID da base de dados.
+	PublicID, _ := vars["pid"]
 	playlist, err := model.GetPlaylistByPublicID(database.DB, PublicID)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -26,7 +25,7 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 		)
 		w.Write(errRet)
 	}
-	VideoID, ok := vars["vid"] // ID do video na base de  dados.
+	VideoID, ok := vars["vid"]
 	if !ok {
 		w.WriteHeader(http.StatusBadRequest)
 		errRet, _ := json.Marshal(

@@ -10,8 +10,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// CreateVideoInPlaylist :
-// Insert a video in a given playlist if the user has access to do so
+// CreateVideoInPlaylist Insert a video in a given playlist if the user has
+// access to do so
 func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)

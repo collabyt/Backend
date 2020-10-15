@@ -8,8 +8,8 @@ import (
 	"github.com/collabyt/Backend/model"
 )
 
-// GetKeywords :
-// Return a list of (max 10) keywords to be used as part of a new playlist
+// GetKeywords return a list of (max 10) keywords to be used as part of a new
+// playlist
 func GetKeywords(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	addressParams := r.URL.Query()

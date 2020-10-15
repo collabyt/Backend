@@ -9,10 +9,8 @@ import (
 	"github.com/collabyt/Backend/model"
 )
 
-// CreatePlaylist :
-// Insert a new playlist in the database based on the data delivered in JSON
-// format.
-// TODO CreatePlaylist has not been implemented.
+// CreatePlaylist Insert a new playlist in the database based on the data
+// delivered in JSON format.
 func CreatePlaylist(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var playlist model.Playlist
