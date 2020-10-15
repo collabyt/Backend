@@ -19,30 +19,26 @@ func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 	var video model.Video
 	err := json.NewDecoder(r.Body).Decode(&video)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(
-			model.Error{Description: err.Error()},
-		)
-		w.Write(errRet)
+		errorStdTreatment(err, w, http.StatusBadRequest)
 		return
 	}
 	playlist, err := model.GetPlaylistByPublicID(database.DB, PublicID)
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		errRet, _ := json.Marshal(
-			model.Error{Description: "Could not find a playlist with that ID"},
+		errorStdTreatment(
+			fmt.Errorf("Could not find a playlist with that ID"),
+			w,
+			http.StatusNotFound,
 		)
-		w.Write(errRet)
 		return
 	}
 	video.PlaylistID = playlist.ID
 	video, ok := model.CreateVideoInPlaylist(database.DB, video)
 	if !ok {
-		w.WriteHeader(http.StatusInternalServerError)
-		errRet, _ := json.Marshal(
-			model.Error{Description: "Something wrong happened when adding the video to the Playlist."},
+		errorStdTreatment(
+			fmt.Errorf("Something wrong happened when adding the video to the Playlist"),
+			w,
+			http.StatusInternalServerError,
 		)
-		w.Write(errRet)
 		return
 	}
 	http.Redirect(w, r, fmt.Sprintf("/api/v1/playlists/%s", playlist.PublicID), http.StatusSeeOther)

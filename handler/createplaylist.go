@@ -16,20 +16,12 @@ func CreatePlaylist(w http.ResponseWriter, r *http.Request) {
 	var playlist model.Playlist
 	err := json.NewDecoder(r.Body).Decode(&playlist)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(
-			model.Error{Description: err.Error()},
-		)
-		w.Write(errRet)
+		errorStdTreatment(err, w, http.StatusBadRequest)
 		return
 	}
 	playlist, err = model.CreatePlaylist(database.DB, playlist)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(
-			model.Error{Description: err.Error()},
-		)
-		w.Write(errRet)
+		errorStdTreatment(err, w, http.StatusBadRequest)
 		return
 	}
 	http.Redirect(w, r, fmt.Sprintf("/api/v1/playlists/%s", playlist.PublicID), http.StatusSeeOther)

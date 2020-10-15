@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
@@ -14,29 +15,25 @@ func GetPlaylistByPublicID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 	if vars["pid"] == "" {
-		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(
-			model.Error{Description: "Could not find the Playlist public ID"},
+		errorStdTreatment(
+			fmt.Errorf("Could not find the playlist public ID"),
+			w,
+			http.StatusBadRequest,
 		)
-		w.Write(errRet)
 		return
 	}
 	PublicID, ok := vars["pid"]
 	if !ok {
-		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(
-			model.Error{Description: "Could not find the Playlist public ID"},
+		errorStdTreatment(
+			fmt.Errorf("Could not find the playlist public ID"),
+			w,
+			http.StatusBadRequest,
 		)
-		w.Write(errRet)
 		return
 	}
 	playlist, err := model.GetPlaylistByPublicID(database.DB, PublicID)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		errRet, _ := json.Marshal(
-			model.Error{Description: err.Error()},
-		)
-		w.Write(errRet)
+		errorStdTreatment(err, w, http.StatusBadRequest)
 		return
 	}
 	jsonResponse, _ := json.Marshal(playlist)

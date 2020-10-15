@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -22,8 +23,11 @@ func GetPlaylists(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if limit > 25 {
-		errRet, _ := json.Marshal(model.Error{Description: "The maximum allowed limit is 25"})
-		w.Write(errRet)
+		errorStdTreatment(
+			fmt.Errorf("The maximum allowed limit is 25"),
+			w,
+			http.StatusBadRequest,
+		)
 		return
 	}
 	offsetSlc, ok := r.URL.Query()["offset"]
@@ -37,8 +41,7 @@ func GetPlaylists(w http.ResponseWriter, r *http.Request) {
 	}
 	ps, err := model.GetPlaylistsByLimitAndOffset(database.DB, limit, offset)
 	if err != nil {
-		errRet, _ := json.Marshal(model.Error{Description: err.Error()})
-		w.Write(errRet)
+		errorStdTreatment(err, w, http.StatusInternalServerError)
 		return
 	}
 	jsonResponse, _ := json.Marshal(ps)
