@@ -33,9 +33,14 @@ func CreateVideoInPlaylist(db *sql.DB, v Video) (Video, bool) {
 }
 
 // DeleteVideo deletes a video from the database. For it to work, it must
-// be part of a specific playlist. Returns ok if file was found and deleted
+// be part of a specific playlist. Returns ok if entry was found and deleted
 // without problems.
-func DeleteVideo(db *sql.DB, v Video) bool { //TODO
-
-	return true
+func DeleteVideo(db *sql.DB, v Video) bool {
+	_, err := db.Exec(
+		`DELETE FROM public.video
+		WHERE id = $1 AND playlist_id = $2;`,
+		v.ID,
+		v.PlaylistID,
+	)
+	return err == nil
 }
