@@ -31,7 +31,7 @@ func main() {
 	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET")   // DONE
 	// Video operations
 	r.HandleFunc("/api/v1/playlists/{pid}/videos", handler.CreateVideoInPlaylist).Methods("POST") // DONE
-	r.HandleFunc("/API/v1/playlists/{pid}/videos/{vid}", handler.DeleteVideo).Methods("DELETE")   // TODO: CHECK MODEL!
+	r.HandleFunc("/api/v1/playlists/{pid}/videos/{vid}", handler.DeleteVideo).Methods("DELETE")   // TODO: CHECK MODEL!
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
 
