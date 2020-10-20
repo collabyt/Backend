@@ -4,9 +4,9 @@ import (
 	"database/sql"
 )
 
-// GetPlaylistsByLimitAndOffset given a limit and offset, returns a list of
+// GetPublicPlaylistsByLimitAndOffset given a limit and offset, returns a list of
 // PUBLIC playlists from the database
-func GetPlaylistsByLimitAndOffset(db *sql.DB, limit int, offset int) ([]Playlist, error) {
+func GetPublicPlaylistsByLimitAndOffset(db *sql.DB, limit int, offset int) ([]Playlist, error) {
 	pRows, err := db.Query(`
 	SELECT 
 		id, public_id, name

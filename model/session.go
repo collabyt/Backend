@@ -33,7 +33,7 @@ func CreateSession(db *sql.DB, s Session) error {
 	var err error
 	_, err = db.Exec(
 		`INSERT INTO public."session"
-			(playlist_public_id, session_id)
+			(playlist_id, session_id)
 		VALUES
 			($1, $2)`,
 		s.PlaylistID,

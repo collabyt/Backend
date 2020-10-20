@@ -32,6 +32,14 @@ func GetPlaylistByPublicID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	playlist, err := model.GetPlaylistByPublicID(database.DB, PublicID)
+	if !playlist.IsPublic {
+		errorStdTreatment(
+			fmt.Errorf("Access Denied, Protected playlist"),
+			w,
+			http.StatusForbidden,
+		)
+		return
+	}
 	if err != nil {
 		errorStdTreatment(err, w, http.StatusBadRequest)
 		return

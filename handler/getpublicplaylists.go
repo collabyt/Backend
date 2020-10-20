@@ -10,8 +10,8 @@ import (
 	"github.com/collabyt/Backend/model"
 )
 
-// GetPlaylists returns a list of playlist based on the Limit and offset.
-func GetPlaylists(w http.ResponseWriter, r *http.Request) {
+// GetPublicPlaylists returns a list of playlist based on the Limit and offset.
+func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	limitSlc, ok := r.URL.Query()["limit"]
 	limit := 10
@@ -39,7 +39,7 @@ func GetPlaylists(w http.ResponseWriter, r *http.Request) {
 			offset = 0
 		}
 	}
-	ps, err := model.GetPlaylistsByLimitAndOffset(database.DB, limit, offset)
+	ps, err := model.GetPublicPlaylistsByLimitAndOffset(database.DB, limit, offset)
 	if err != nil {
 		errorStdTreatment(err, w, http.StatusInternalServerError)
 		return
