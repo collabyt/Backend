@@ -22,7 +22,7 @@ func main() {
 	r.HandleFunc("/api/v1/playlists/{pid}", handler.GetPlaylistByPublicID).Methods("GET") // DONE
 	r.HandleFunc("/api/v1/playlists", handler.GetPublicPlaylists).Methods("GET")          // DONE
 	// Private Playlist operations
-	r.HandleFunc("/api/v1/auth/{pid}", handler.RequestAccessToPlaylist).Methods("POST")
+	r.HandleFunc("/api/v1/auth/{pid}", handler.RequestAccessToPlaylist).Methods("POST") // PublicID
 	// Keyword operations
 	r.HandleFunc("/api/v1/keywords", handler.CreateKeyword).Methods("POST") // DONE
 	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET")   // DONE

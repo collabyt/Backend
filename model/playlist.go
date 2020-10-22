@@ -27,7 +27,8 @@ func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
 			id,
 			public_id,
 			name,
-			is_public
+			is_public,
+			passphrase
 		FROM 
 			public.playlist 
 		WHERE 
@@ -35,7 +36,7 @@ func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
 		publicID,
 	)
 	var p Playlist
-	err := pRow.Scan(&p.ID, &p.PublicID, &p.Name, &p.IsPublic)
+	err := pRow.Scan(&p.ID, &p.PublicID, &p.Name, &p.IsPublic, &p.Passphrase)
 	if err != nil {
 		return Playlist{}, err
 	}

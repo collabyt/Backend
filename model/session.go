@@ -4,15 +4,15 @@ import "database/sql"
 
 // Session is the structure of a valid session in the database or cookie
 type Session struct {
-	PlaylistID string //playlist_id varchar(8) NOT NULL,
-	SessionID  string //session_id varchar(8) NOT NULL,
+	PlaylistID int
+	SessionID  string
 }
 
 // GetSessionBySessionID get the session from their base64 string
 func GetSessionBySessionID(db *sql.DB, id string) (Session, error) {
 	row := db.QueryRow(
 		`SELECT 
-			playlist_public_id, session_id
+			playlist_id, session_id
 		FROM 
 			public."session"
 		WHERE 
