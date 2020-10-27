@@ -18,18 +18,18 @@ func main() {
 	r := mux.NewRouter()
 
 	// Playlist operations
-	r.HandleFunc("/api/v1/playlists", handler.CreatePlaylist).Methods("POST")             // DONE
-	r.HandleFunc("/api/v1/playlists/{pid}", handler.GetPlaylistByPublicID).Methods("GET") // DONE
-	r.HandleFunc("/api/v1/playlists", handler.GetPublicPlaylists).Methods("GET")          // DONE
+	r.HandleFunc("/api/v1/playlists", handler.CreatePlaylist).Methods("POST")                  // DONE
+	r.HandleFunc("/api/v1/playlists/{PublicID}", handler.GetPlaylistByPublicID).Methods("GET") // DONE
+	r.HandleFunc("/api/v1/playlists", handler.GetPublicPlaylists).Methods("GET")               // DONE
 	// Private Playlist operations
-	r.HandleFunc("/api/v1/auth/{pid}", handler.RequestAccessToPlaylist).Methods("POST") // DONE
-	r.HandleFunc("/api/v1/exit/{pid}", handler.DeauthorizeToPlaylist).Methods("GET")    // IN PROGRESS
+	r.HandleFunc("/api/v1/auth/{PublicID}", handler.RequestAccessToPlaylist).Methods("POST") // DONE
+	r.HandleFunc("/api/v1/exit/{PublicID}", handler.DeauthorizeToPlaylist).Methods("GET")    // IN PROGRESS
 	// Keyword operations
 	r.HandleFunc("/api/v1/keywords", handler.CreateKeyword).Methods("POST") // DONE
 	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET")   // DONE
 	// Video operations
-	r.HandleFunc("/api/v1/playlists/{pid}/videos", handler.CreateVideoInPlaylist).Methods("POST") // DONE
-	r.HandleFunc("/api/v1/playlists/{pid}/videos/{vid}", handler.DeleteVideo).Methods("DELETE")   // DONE
+	r.HandleFunc("/api/v1/playlists/{PublicID}/videos", handler.CreateVideoInPlaylist).Methods("POST")   // DONE
+	r.HandleFunc("/api/v1/playlists/{PublicID}/videos/{VideoID}", handler.DeleteVideo).Methods("DELETE") // DONE
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
 

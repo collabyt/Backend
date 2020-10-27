@@ -13,7 +13,7 @@ import (
 // given video from a specific playlist
 func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	publicID, err := fetchVars(r, "pid")
+	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
 		errorStdTreatment(err, w, http.StatusBadRequest)
 	}
@@ -26,7 +26,7 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	videoID, err := fetchVars(r, "vid")
+	videoID, err := fetchVars(r, "VideoID")
 	if err != nil {
 		errorStdTreatment(err, w, http.StatusBadRequest)
 	}

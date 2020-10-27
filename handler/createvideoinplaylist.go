@@ -13,7 +13,7 @@ import (
 // access to do so
 func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	publicID, err := fetchVars(r, "pid")
+	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
 		errorStdTreatment(err, w, http.StatusBadRequest)
 	}
