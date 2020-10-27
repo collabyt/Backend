@@ -7,22 +7,23 @@ import (
 
 	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/model"
-	"github.com/gorilla/mux"
 )
 
 // CreateVideoInPlaylist Insert a video in a given playlist if the user has
 // access to do so
 func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	vars := mux.Vars(r)
-	PublicID, _ := vars["pid"]
+	publicID, err := fetchVars(r, "pid")
+	if err != nil {
+		errorStdTreatment(err, w, http.StatusBadRequest)
+	}
 	var video model.Video
-	err := json.NewDecoder(r.Body).Decode(&video)
+	err = json.NewDecoder(r.Body).Decode(&video)
 	if err != nil {
 		errorStdTreatment(err, w, http.StatusBadRequest)
 		return
 	}
-	playlist, err := model.GetPlaylistByPublicID(database.DB, PublicID)
+	playlist, err := model.GetPlaylistByPublicID(database.DB, publicID)
 	if err != nil {
 		errorStdTreatment(
 			fmt.Errorf("Could not find a playlist with that ID"),

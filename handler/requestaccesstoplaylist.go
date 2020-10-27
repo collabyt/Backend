@@ -10,15 +10,17 @@ import (
 
 	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/model"
-	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // RequestAccessToPlaylist authorize or deny access to a given playlist.
 func RequestAccessToPlaylist(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	vars := mux.Vars(r)
-	cook, err := r.Cookie(vars["pid"])
+	publicID, err := fetchVars(r, "pid")
+	if err != nil {
+		errorStdTreatment(err, w, http.StatusBadRequest)
+	}
+	cook, err := r.Cookie(publicID)
 	if err != nil {
 		var auth model.Auth
 		err = json.NewDecoder(r.Body).Decode(&auth)

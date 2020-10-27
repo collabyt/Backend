@@ -7,31 +7,16 @@ import (
 
 	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/model"
-	"github.com/gorilla/mux"
 )
 
 // GetPlaylistByPublicID returns a given playlist by it's public ID.
 func GetPlaylistByPublicID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	vars := mux.Vars(r)
-	if vars["pid"] == "" {
-		errorStdTreatment(
-			fmt.Errorf("Could not find the playlist public ID"),
-			w,
-			http.StatusBadRequest,
-		)
-		return
+	publicID, err := fetchVars(r, "pid")
+	if err != nil {
+		errorStdTreatment(err, w, http.StatusBadRequest)
 	}
-	PublicID, ok := vars["pid"]
-	if !ok {
-		errorStdTreatment(
-			fmt.Errorf("Could not find the playlist public ID"),
-			w,
-			http.StatusBadRequest,
-		)
-		return
-	}
-	playlist, err := model.GetPlaylistByPublicID(database.DB, PublicID)
+	playlist, err := model.GetPlaylistByPublicID(database.DB, publicID)
 	if !playlist.IsPublic {
 		errorStdTreatment(
 			fmt.Errorf("Access Denied, Protected playlist"),

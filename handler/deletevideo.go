@@ -7,16 +7,17 @@ import (
 
 	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/model"
-	"github.com/gorilla/mux"
 )
 
 // DeleteVideo this is the handler that takes care of the hability to delete a
 // given video from a specific playlist
 func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	vars := mux.Vars(r)
-	PublicID, _ := vars["pid"]
-	playlist, err := model.GetPlaylistByPublicID(database.DB, PublicID)
+	publicID, err := fetchVars(r, "pid")
+	if err != nil {
+		errorStdTreatment(err, w, http.StatusBadRequest)
+	}
+	playlist, err := model.GetPlaylistByPublicID(database.DB, publicID)
 	if err != nil {
 		errorStdTreatment(
 			fmt.Errorf("Coud not locate the playlist by it's public ID"),
@@ -25,18 +26,13 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	VideoID, ok := vars["vid"]
-	if !ok {
-		errorStdTreatment(
-			fmt.Errorf("Could not identify a valid video ID"),
-			w,
-			http.StatusBadRequest,
-		)
-		return
+	videoID, err := fetchVars(r, "vid")
+	if err != nil {
+		errorStdTreatment(err, w, http.StatusBadRequest)
 	}
 	var v model.Video
 	v.PlaylistID = playlist.ID
-	v.ID, err = strconv.Atoi(VideoID)
+	v.ID, err = strconv.Atoi(videoID)
 	if err != nil {
 		errorStdTreatment(
 			fmt.Errorf("Video ID invalid"),
@@ -45,7 +41,7 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	ok = model.DeleteVideo(database.DB, v)
+	ok := model.DeleteVideo(database.DB, v)
 	if !ok {
 		errorStdTreatment(
 			fmt.Errorf("Could not delete the requested video"),
