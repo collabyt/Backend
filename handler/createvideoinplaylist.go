@@ -30,7 +30,11 @@ func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if !ok {
-			errorStdTreatment(fmt.Errorf("Something bad happened"), w, http.StatusInternalServerError)
+			errorStdTreatment(
+				fmt.Errorf("Something really bad happened on our side"),
+				w,
+				http.StatusInternalServerError,
+			)
 			return
 		}
 	}
@@ -51,6 +55,7 @@ func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	np, err := model.GetPlaylistByPublicID(database.DB, playlist.PublicID)
+	np.Passphrase = ""
 	jsonResponse, _ := json.Marshal(np)
 	w.Write(jsonResponse)
 }
