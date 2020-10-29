@@ -16,20 +16,28 @@ func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
 		errorStdTreatment(err, w, http.StatusBadRequest)
+		return
+	}
+	playlist, err := fetchPlaylist(database.DB, publicID)
+	if err != nil {
+		errorStdTreatment(err, w, http.StatusNotFound)
+		return
+	}
+	if !playlist.IsPublic {
+		ok, err := validateSession(database.DB, r, playlist)
+		if err != nil {
+			errorStdTreatment(err, w, http.StatusForbidden)
+			return
+		}
+		if !ok {
+			errorStdTreatment(fmt.Errorf("Something bad happened"), w, http.StatusInternalServerError)
+			return
+		}
 	}
 	var video model.Video
 	err = json.NewDecoder(r.Body).Decode(&video)
 	if err != nil {
 		errorStdTreatment(err, w, http.StatusBadRequest)
-		return
-	}
-	playlist, err := model.GetPlaylistByPublicID(database.DB, publicID)
-	if err != nil {
-		errorStdTreatment(
-			fmt.Errorf("Could not find a playlist with that ID"),
-			w,
-			http.StatusNotFound,
-		)
 		return
 	}
 	video.PlaylistID = playlist.ID
@@ -42,6 +50,7 @@ func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	http.Redirect(w, r, fmt.Sprintf("/api/v1/playlists/%s", playlist.PublicID), http.StatusSeeOther)
-	return
+	np, err := model.GetPlaylistByPublicID(database.DB, playlist.PublicID)
+	jsonResponse, _ := json.Marshal(np)
+	w.Write(jsonResponse)
 }
