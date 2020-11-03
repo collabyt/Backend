@@ -28,7 +28,7 @@ func main() {
 	r.HandleFunc("/api/v1/keywords", handler.CreateKeyword).Methods("POST") // DONE
 	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET")   // DONE
 	// Video operations
-	r.HandleFunc("/api/v1/playlists/{PublicID}/videos", handler.CreateVideoInPlaylist).Methods("POST")   // TODO: ADD VALIDATION FOR PRIVATE PLAYLISTS
+	r.HandleFunc("/api/v1/playlists/{PublicID}/videos", handler.CreateVideoInPlaylist).Methods("POST")   // DONE
 	r.HandleFunc("/api/v1/playlists/{PublicID}/videos/{VideoID}", handler.DeleteVideo).Methods("DELETE") // DONE
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
