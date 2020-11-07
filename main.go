@@ -7,6 +7,7 @@ import (
 
 	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/handler"
+	"github.com/collabyt/Backend/limiter"
 	"github.com/gorilla/mux"
 )
 
@@ -28,14 +29,16 @@ func main() {
 	r.HandleFunc("/api/v1/keywords", handler.CreateKeyword).Methods("POST") // DONE
 	r.HandleFunc("/api/v1/keywords/", handler.GetKeywords).Methods("GET")   // DONE
 	// Video operations
-	r.HandleFunc("/api/v1/playlists/{PublicID}/videos", handler.CreateVideoInPlaylist).Methods("POST")   // TODO: ADD VALIDATION FOR PRIVATE PLAYLISTS
+	r.HandleFunc("/api/v1/playlists/{PublicID}/videos", handler.CreateVideoInPlaylist).Methods("POST")   // DONE
 	r.HandleFunc("/api/v1/playlists/{PublicID}/videos/{VideoID}", handler.DeleteVideo).Methods("DELETE") // DONE
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
-	// TODO: ADD LIMIT TO AVOID DOS AND DDOS
+
+	visitors := limiter.NewCatalog(256)
+	go limiter.CleanupVisitors(visitors)
 	server := http.Server{
 		Addr:         ":8080",
-		Handler:      r,
+		Handler:      limiter.Limit(visitors, r),
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
