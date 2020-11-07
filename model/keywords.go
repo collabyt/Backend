@@ -75,6 +75,7 @@ func GetKeywordsByPlaylistID(db *sql.DB, playlistID int) ([]Keyword, error) {
 	if err != nil {
 		return []Keyword{}, err
 	}
+	defer kRows.Close()
 	var ks []Keyword
 	for kRows.Next() {
 		var k Keyword

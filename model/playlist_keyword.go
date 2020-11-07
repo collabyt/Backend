@@ -17,6 +17,7 @@ func CreateKeywordsRelation(db *sql.DB, playlistID int, wordList []Keyword) erro
 	if err != nil {
 		return err
 	}
+	defer SQLStatement.Close()
 	_, err = SQLStatement.Exec()
 	if err != nil {
 		return err

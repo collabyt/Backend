@@ -18,14 +18,14 @@ var (
 func Connect() {
 	dbInfo := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		DbHost,
-		DbPort,
-		DbUser,
-		DbPassword,
-		DbDatabase,
-		DbSsl,
+		dbHost,
+		dbPort,
+		dbUser,
+		dbPassword,
+		dbDatabase,
+		dbSsl,
 	)
-	db, err := sql.Open(DbSource, dbInfo)
+	db, err := sql.Open(dbSource, dbInfo)
 	if err != nil {
 		panic(err)
 	}
