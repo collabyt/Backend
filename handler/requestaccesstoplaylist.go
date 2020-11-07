@@ -18,19 +18,19 @@ func RequestAccessToPlaylist(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusBadRequest)
+		WriteErrorReply(w, http.StatusBadRequest)
 	}
 	cook, err := r.Cookie(publicID)
 	if err != nil {
 		var auth model.Auth
 		err = json.NewDecoder(r.Body).Decode(&auth)
 		if err != nil {
-			errorStdTreatment(err, w, http.StatusBadRequest)
+			WriteErrorReply(w, http.StatusBadRequest)
 			return
 		}
 		newCookie, httpErrCode, err := noCookie(auth)
 		if err != nil {
-			errorStdTreatment(err, w, httpErrCode)
+			WriteErrorReply(w, httpErrCode)
 			return
 		}
 		http.SetCookie(w, &newCookie)
@@ -42,7 +42,7 @@ func RequestAccessToPlaylist(w http.ResponseWriter, r *http.Request) {
 	}
 	jsonPlaylist, err := hasCookie(cook)
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusUnauthorized)
+		WriteErrorReply(w, http.StatusUnauthorized)
 	}
 	w.Write(jsonPlaylist)
 }

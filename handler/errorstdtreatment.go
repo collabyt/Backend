@@ -7,10 +7,12 @@ import (
 	"github.com/collabyt/Backend/model"
 )
 
-func errorStdTreatment(err error, w http.ResponseWriter, httpCode int) {
+// WriteErrorReply create an error response to the user and add it to the
+// responsewriter
+func WriteErrorReply(w http.ResponseWriter, httpCode int) {
 	w.WriteHeader(httpCode)
 	errRet, _ := json.Marshal(
-		model.Error{Description: err.Error()},
+		model.Error{Description: http.StatusText(httpCode)},
 	)
 	w.Write(errRet)
 }

@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
@@ -15,8 +14,7 @@ func GetKeywords(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	addressParams := r.URL.Query()
 	if len(addressParams["likewise"]) < 1 || len(addressParams["likewise"][0]) < 2 {
-		errorStdTreatment(
-			fmt.Errorf("likewise string with at least two characters is mandatory"),
+		WriteErrorReply(
 			w,
 			http.StatusBadRequest,
 		)
@@ -24,7 +22,7 @@ func GetKeywords(w http.ResponseWriter, r *http.Request) {
 	}
 	wordList, err := model.GetKeywordsByPartialWord(database.DB, addressParams["likewise"][0])
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusBadRequest)
+		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
 	jsonResponse, _ := json.Marshal(wordList)

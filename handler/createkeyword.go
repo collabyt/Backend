@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
@@ -16,12 +15,11 @@ func CreateKeyword(w http.ResponseWriter, r *http.Request) {
 	var word model.Keyword
 	err := json.NewDecoder(r.Body).Decode(&word)
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusBadRequest)
+		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
 	if len(word.Word) < 2 {
-		errorStdTreatment(
-			fmt.Errorf("Keyword need to have at least two characters"),
+		WriteErrorReply(
 			w,
 			http.StatusBadRequest,
 		)
@@ -29,7 +27,7 @@ func CreateKeyword(w http.ResponseWriter, r *http.Request) {
 	}
 	word, err = model.CreateKeyword(database.DB, word.Word)
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusBadRequest)
+		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
 	jsonResponse, _ := json.Marshal(word)

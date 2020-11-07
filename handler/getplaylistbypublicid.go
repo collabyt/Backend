@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
@@ -14,19 +13,18 @@ func GetPlaylistByPublicID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusBadRequest)
+		WriteErrorReply(w, http.StatusBadRequest)
 	}
 	playlist, err := model.GetPlaylistByPublicID(database.DB, publicID)
 	if !playlist.IsPublic {
-		errorStdTreatment(
-			fmt.Errorf("Access Denied, Protected playlist"),
+		WriteErrorReply(
 			w,
 			http.StatusForbidden,
 		)
 		return
 	}
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusBadRequest)
+		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
 	jsonResponse, _ := json.Marshal(playlist)

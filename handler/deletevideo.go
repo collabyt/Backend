@@ -15,12 +15,11 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusBadRequest)
+		WriteErrorReply(w, http.StatusBadRequest)
 	}
 	playlist, err := model.GetPlaylistByPublicID(database.DB, publicID)
 	if err != nil {
-		errorStdTreatment(
-			fmt.Errorf("Coud not locate the playlist by it's public ID"),
+		WriteErrorReply(
 			w,
 			http.StatusNotFound,
 		)
@@ -28,14 +27,13 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	}
 	videoID, err := fetchVars(r, "VideoID")
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusBadRequest)
+		WriteErrorReply(w, http.StatusBadRequest)
 	}
 	var v model.Video
 	v.PlaylistID = playlist.ID
 	v.ID, err = strconv.Atoi(videoID)
 	if err != nil {
-		errorStdTreatment(
-			fmt.Errorf("Video ID invalid"),
+		WriteErrorReply(
 			w,
 			http.StatusBadRequest,
 		)
@@ -43,8 +41,7 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	}
 	ok := model.DeleteVideo(database.DB, v)
 	if !ok {
-		errorStdTreatment(
-			fmt.Errorf("Could not delete the requested video"),
+		WriteErrorReply(
 			w,
 			http.StatusInternalServerError,
 		)

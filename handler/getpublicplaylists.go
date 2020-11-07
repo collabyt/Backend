@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -23,8 +22,7 @@ func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if limit > 25 {
-		errorStdTreatment(
-			fmt.Errorf("The maximum allowed limit is 25"),
+		WriteErrorReply(
 			w,
 			http.StatusBadRequest,
 		)
@@ -41,7 +39,7 @@ func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
 	}
 	ps, err := model.GetPublicPlaylistsByLimitAndOffset(database.DB, limit, offset)
 	if err != nil {
-		errorStdTreatment(err, w, http.StatusInternalServerError)
+		WriteErrorReply(w, http.StatusInternalServerError)
 		return
 	}
 	jsonResponse, _ := json.Marshal(ps)
