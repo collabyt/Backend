@@ -29,10 +29,7 @@ func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if !ok {
-			WriteErrorReply(
-				w,
-				http.StatusInternalServerError,
-			)
+			WriteErrorReply(w, http.StatusInternalServerError)
 			return
 		}
 	}
@@ -45,10 +42,7 @@ func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 	video.PlaylistID = playlist.ID
 	video, ok := model.CreateVideoInPlaylist(database.DB, video)
 	if !ok {
-		WriteErrorReply(
-			w,
-			http.StatusInternalServerError,
-		)
+		WriteErrorReply(w, http.StatusInternalServerError)
 		return
 	}
 	np, err := model.GetPlaylistByPublicID(database.DB, playlist.PublicID)

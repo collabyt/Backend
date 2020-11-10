@@ -22,10 +22,7 @@ func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if limit > 25 {
-		WriteErrorReply(
-			w,
-			http.StatusBadRequest,
-		)
+		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
 	offsetSlc, ok := r.URL.Query()["offset"]

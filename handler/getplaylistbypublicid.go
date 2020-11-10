@@ -17,10 +17,7 @@ func GetPlaylistByPublicID(w http.ResponseWriter, r *http.Request) {
 	}
 	playlist, err := model.GetPlaylistByPublicID(database.DB, publicID)
 	if !playlist.IsPublic {
-		WriteErrorReply(
-			w,
-			http.StatusForbidden,
-		)
+		WriteErrorReply(w, http.StatusForbidden)
 		return
 	}
 	if err != nil {

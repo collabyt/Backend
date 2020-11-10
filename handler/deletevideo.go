@@ -19,10 +19,7 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	}
 	playlist, err := model.GetPlaylistByPublicID(database.DB, publicID)
 	if err != nil {
-		WriteErrorReply(
-			w,
-			http.StatusNotFound,
-		)
+		WriteErrorReply(w, http.StatusNotFound)
 		return
 	}
 	videoID, err := fetchVars(r, "VideoID")
@@ -33,20 +30,19 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	v.PlaylistID = playlist.ID
 	v.ID, err = strconv.Atoi(videoID)
 	if err != nil {
-		WriteErrorReply(
-			w,
-			http.StatusBadRequest,
-		)
+		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
 	ok := model.DeleteVideo(database.DB, v)
 	if !ok {
-		WriteErrorReply(
-			w,
-			http.StatusInternalServerError,
-		)
+		WriteErrorReply(w, http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(w, r, fmt.Sprintf("/api/v1/playlists/%s", playlist.PublicID), http.StatusSeeOther)
+	http.Redirect(
+		w,
+		r,
+		fmt.Sprintf("/api/v1/playlists/%s", playlist.PublicID),
+		http.StatusSeeOther,
+	)
 	return
 }
