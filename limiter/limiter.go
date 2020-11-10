@@ -21,14 +21,16 @@ type Visitor struct {
 type Catalog struct {
 	visitors map[string]*Visitor
 	mu       sync.RWMutex
+	rate     rate.Limit
+	maxBurst int
 }
 
-const eraseTimeLimit = 60
-
 // NewCatalog initialize the visitors map inside the type Catalog
-func NewCatalog(size int) *Catalog {
+func NewCatalog(size, r, maxBurst int) *Catalog {
 	var cat Catalog
-	cat.visitors = make(map[string]*Visitor)
+	cat.visitors = make(map[string]*Visitor, size)
+	cat.rate = rate.Limit(r)
+	cat.maxBurst = maxBurst
 	return &cat
 }
 
@@ -37,7 +39,7 @@ func getVisitor(cat *Catalog, ip string) *rate.Limiter {
 	v, exist := cat.visitors[ip]
 	cat.mu.RUnlock()
 	if !exist {
-		limiter := rate.NewLimiter(1, 3)
+		limiter := rate.NewLimiter(cat.rate, cat.maxBurst)
 		cat.mu.Lock() //read
 		cat.visitors[ip] = &Visitor{limiter, time.Now()}
 		cat.mu.Unlock()
@@ -69,13 +71,12 @@ func Limit(cat *Catalog, next http.Handler) http.Handler {
 }
 
 // CleanupVisitors remove unused IP's from the visitors
-func CleanupVisitors(cat *Catalog) {
+func CleanupVisitors(cat *Catalog, limit time.Duration) {
 	for {
 		time.Sleep(time.Minute)
-
 		cat.mu.Lock()
 		for ip, v := range cat.visitors {
-			if time.Since(v.lastSeen) > time.Hour {
+			if time.Since(v.lastSeen) > limit {
 				delete(cat.visitors, ip)
 			}
 		}
