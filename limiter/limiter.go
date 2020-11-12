@@ -1,20 +1,48 @@
 package limiter
 
 import (
+	"fmt"
 	"net"
 	"net/http"
-	"sync"
-	"time"
 
-	"golang.org/x/time/rate"
-
+	"github.com/collabyt/Backend/cache"
 	"github.com/collabyt/Backend/handler"
+	"github.com/go-redis/redis/v8"
+	"github.com/go-redis/redis_rate/v9"
 )
 
+// Limit cap the amount of requests possible for a single IP in a given period
+// of time
+func Limit(rClient *redis.Client, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		ip, _, err := net.SplitHostPort(r.RemoteAddr)
+		if err != nil {
+			handler.WriteErrorReply(w, http.StatusInternalServerError)
+			return
+		}
+		ctx := r.Context()
+		limiter := redis_rate.NewLimiter(cache.Cache)
+		rRet, err := limiter.Allow(ctx, ip, redis_rate.PerMinute(timeToDumpVisitor))
+		if err != nil {
+			handler.WriteErrorReply(w, http.StatusInternalServerError)
+			return
+
+		}
+		if rRet.Allowed == 0 {
+			handler.WriteErrorReply(w, http.StatusTooManyRequests)
+			return
+		}
+		fmt.Println("allowed", rRet.Allowed, "remaining", rRet.Remaining)
+		next.ServeHTTP(w, r)
+	})
+}
+
+/*
 // Visitor is a instance of a user accessing the API
 type Visitor struct {
-	limiter  *rate.Limiter
-	lastSeen time.Time
+	limiter *rate.Limiter
+	expiration
 }
 
 // Catalog represent a list of visitor and a Mutex
@@ -69,17 +97,4 @@ func Limit(cat *Catalog, next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
-
-// CleanupVisitors remove unused IP's from the visitors
-func CleanupVisitors(cat *Catalog, limit time.Duration) {
-	for {
-		time.Sleep(time.Minute)
-		cat.mu.Lock()
-		for ip, v := range cat.visitors {
-			if time.Since(v.lastSeen) > limit {
-				delete(cat.visitors, ip)
-			}
-		}
-		cat.mu.Unlock()
-	}
-}
+*/

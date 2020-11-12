@@ -17,13 +17,13 @@ func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	playlist, err := fetchPlaylist(database.DB, publicID)
+	playlist, err := fetchPlaylist(database.Db, publicID)
 	if err != nil {
 		WriteErrorReply(w, http.StatusNotFound)
 		return
 	}
 	if !playlist.IsPublic {
-		ok, err := validateSession(database.DB, r, playlist)
+		ok, err := validateSession(database.Db, r, playlist)
 		if err != nil {
 			WriteErrorReply(w, http.StatusForbidden)
 			return
@@ -40,12 +40,12 @@ func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	video.PlaylistID = playlist.ID
-	video, ok := model.CreateVideoInPlaylist(database.DB, video)
+	video, ok := model.CreateVideoInPlaylist(database.Db, video)
 	if !ok {
 		WriteErrorReply(w, http.StatusInternalServerError)
 		return
 	}
-	np, err := model.GetPlaylistByPublicID(database.DB, playlist.PublicID)
+	np, err := model.GetPlaylistByPublicID(database.Db, playlist.PublicID)
 	np.Passphrase = ""
 	jsonResponse, _ := json.Marshal(np)
 	w.Write(jsonResponse)

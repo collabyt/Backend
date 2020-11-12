@@ -29,7 +29,7 @@ func RequestAccessToPlaylist(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		http.SetCookie(w, &newCookie)
-		playlist, _ := model.GetPlaylistByPublicID(database.DB, newCookie.Name)
+		playlist, _ := model.GetPlaylistByPublicID(database.Db, newCookie.Name)
 		playlist.Passphrase = ""
 		jasonPlaylist, _ := json.Marshal(playlist)
 		w.Write(jasonPlaylist)

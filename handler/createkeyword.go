@@ -22,7 +22,7 @@ func CreateKeyword(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	word, err = model.CreateKeyword(database.DB, word.Word)
+	word, err = model.CreateKeyword(database.Db, word.Word)
 	if err != nil {
 		WriteErrorReply(w, http.StatusConflict)
 		return

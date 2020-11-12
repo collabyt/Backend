@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	// DB is the Database connection pool
-	DB *sql.DB
+	// Dd is the Database connection pool
+	Db *sql.DB
 )
 
 // Connect opens a connection to the postgres database using the environment
@@ -33,5 +33,5 @@ func Connect() {
 	if err != nil {
 		panic(err)
 	}
-	DB = db
+	Db = db
 }

@@ -12,7 +12,7 @@ import (
 )
 
 func hasCookie(cook *http.Cookie) ([]byte, error) {
-	s, err := model.GetSessionBySessionID(database.DB, cook.Value)
+	s, err := model.GetSessionBySessionID(database.Db, cook.Value)
 	if err != nil {
 		return []byte{}, err
 	}
@@ -20,7 +20,7 @@ func hasCookie(cook *http.Cookie) ([]byte, error) {
 	if s == es {
 		cook.MaxAge = -1
 	}
-	playlist, err := model.GetPlaylistByPublicID(database.DB, cook.Name)
+	playlist, err := model.GetPlaylistByPublicID(database.Db, cook.Name)
 	if err != nil {
 		return []byte{}, err
 	}
@@ -34,7 +34,7 @@ func noCookie(a model.Auth) (http.Cookie, int, error) {
 			http.StatusUnauthorized,
 			fmt.Errorf("Invalid Public ID")
 	}
-	ps, err := model.GetPlaylistByPublicID(database.DB, a.PublicID)
+	ps, err := model.GetPlaylistByPublicID(database.Db, a.PublicID)
 	if err != nil {
 		return http.Cookie{},
 			http.StatusUnauthorized, err
@@ -55,7 +55,7 @@ func noCookie(a model.Auth) (http.Cookie, int, error) {
 			fmt.Errorf("Something wrong happened")
 	}
 
-	err = model.CreateSession(database.DB, s)
+	err = model.CreateSession(database.Db, s)
 	if err != nil {
 		return http.Cookie{},
 			http.StatusInternalServerError,

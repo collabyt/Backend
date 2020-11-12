@@ -21,7 +21,7 @@ func DeauthorizeToPlaylist(w http.ResponseWriter, r *http.Request) {
 	}
 	cook.MaxAge = -1
 	http.SetCookie(w, cook)
-	err = model.DeleteSessionBySessionID(database.DB, cook.Value)
+	err = model.DeleteSessionBySessionID(database.Db, cook.Value)
 	if err != nil {
 		WriteErrorReply(w, http.StatusInternalServerError)
 		return

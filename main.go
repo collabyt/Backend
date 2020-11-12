@@ -5,6 +5,7 @@ import (
 
 	"time"
 
+	"github.com/collabyt/Backend/cache"
 	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/handler"
 	"github.com/collabyt/Backend/limiter"
@@ -14,6 +15,8 @@ import (
 func main() {
 	// Database connection pool
 	database.Connect()
+	// Document database connection client
+	cache.Connect()
 
 	// API routes
 	r := mux.NewRouter()
@@ -34,13 +37,9 @@ func main() {
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
 
-	visitors := limiter.NewCatalog(256, 5, 10) // TODO: Change to environment variabes
-	timeToDumpVisitor := 60 * time.Minute      // TODO: Change to environment variabe
-	go limiter.CleanupVisitors(visitors, timeToDumpVisitor)
-
 	server := http.Server{
 		Addr:         ":8080",
-		Handler:      limiter.Limit(visitors, r),
+		Handler:      limiter.Limit(cache.Cache, r),
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
