@@ -23,7 +23,7 @@ func Limit(rClient *redis.Client, next http.Handler) http.Handler {
 		}
 		ctx := r.Context()
 		limiter := redis_rate.NewLimiter(cache.Cache)
-		rRet, err := limiter.Allow(ctx, ip, redis_rate.PerMinute(timeToDumpVisitor))
+		rRet, err := limiter.Allow(ctx, ip, redis_rate.PerMinute(cache.CacheTTL))
 		if err != nil {
 			handler.WriteErrorReply(w, http.StatusInternalServerError)
 			return

@@ -1,12 +1,14 @@
 package database
 
-var (
-	dbHost     = "localhost" // TODO: Change to environment variabe
-	dbUser     = "postgres"  // TODO: Change to environment variabe
-	dbPassword = "postgres"  // TODO: Change to environment variabe
-	dbDatabase = "collabyt"  // TODO: Change to environment variabe
-	dbPort     = "5432"      // TODO: Change to environment variabe
+import "os"
 
-	dbSsl    = "disable"  // TODO: Change to environment variabe
-	dbSource = "postgres" // TODO: Change to environment variabe
+var (
+	dbHost     = os.Getenv("DB_HOST")
+	dbUser     = os.Getenv("DB_USER")
+	dbPassword = os.Getenv("DB_PASSWORD")
+	dbDatabase = os.Getenv("DB_DATABASE")
+	dbPort     = os.Getenv("DB_PORT")
+
+	dbSsl    = os.Getenv("DB_SSL")
+	dbSource = os.Getenv("DB_SOURCE")
 )
