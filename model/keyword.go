@@ -14,11 +14,6 @@ type Keyword struct {
 //already. If exists, returns the word itself from the database.
 func CreateKeyword(db *sql.DB, word string) (Keyword, error) {
 	var k Keyword
-	sRow := db.QueryRow(`SELECT id, word FROM keyword WHERE word = $1;`, word)
-	err := sRow.Scan(&k.ID, &k.Word)
-	if err == nil {
-		return k, nil
-	}
 	iRow := db.QueryRow(
 		`INSERT INTO public.keyword 
 			(word) 
@@ -27,11 +22,8 @@ func CreateKeyword(db *sql.DB, word string) (Keyword, error) {
 		RETURNING id, word;`,
 		word,
 	)
-	err = iRow.Scan(&k.ID, &k.Word)
-	if err != nil {
-		return Keyword{}, err
-	}
-	return k, nil
+	err := iRow.Scan(&k.ID, &k.Word)
+	return k, err
 }
 
 // GetKeywordByID returns a single keyword based in it's id.

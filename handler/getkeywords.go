@@ -14,13 +14,10 @@ func GetKeywords(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	addressParams := r.URL.Query()
 	if len(addressParams["likewise"]) < 1 || len(addressParams["likewise"][0]) < 2 {
-		WriteErrorReply(
-			w,
-			http.StatusBadRequest,
-		)
+		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	wordList, err := model.GetKeywordsByPartialWord(database.DB, addressParams["likewise"][0])
+	wordList, err := model.GetKeywordsByPartialWord(database.Db, addressParams["likewise"][0])
 	if err != nil {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return

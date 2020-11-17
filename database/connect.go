@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	// DB is the Database connection pool
-	DB *sql.DB
+	// Dd is the Database connection pool
+	Db *sql.DB
 )
 
 // Connect opens a connection to the postgres database using the environment
@@ -18,14 +18,14 @@ var (
 func Connect() {
 	dbInfo := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		DbHost,
-		DbPort,
-		DbUser,
-		DbPassword,
-		DbDatabase,
-		DbSsl,
+		dbHost,
+		dbPort,
+		dbUser,
+		dbPassword,
+		dbDatabase,
+		dbSsl,
 	)
-	db, err := sql.Open(DbSource, dbInfo)
+	db, err := sql.Open(dbSource, dbInfo)
 	if err != nil {
 		panic(err)
 	}
@@ -33,5 +33,5 @@ func Connect() {
 	if err != nil {
 		panic(err)
 	}
-	DB = db
+	Db = db
 }

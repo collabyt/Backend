@@ -12,7 +12,10 @@ import (
 func WriteErrorReply(w http.ResponseWriter, httpCode int) {
 	w.WriteHeader(httpCode)
 	errRet, _ := json.Marshal(
-		model.Error{Description: http.StatusText(httpCode)},
+		model.Error{
+			ErrorCode:   httpCode,
+			Description: http.StatusText(httpCode),
+		},
 	)
 	w.Write(errRet)
 }

@@ -26,6 +26,7 @@ func GetPublicPlaylistsByLimitAndOffset(db *sql.DB, limit int, offset int) ([]Pl
 	if err != nil {
 		return []Playlist{}, err
 	}
+	defer pRows.Close()
 	var ps []Playlist
 	for pRows.Next() {
 		var p Playlist

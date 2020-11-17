@@ -17,6 +17,7 @@ func GetVideosByPlaylistID(db *sql.DB, playlistID int) ([]Video, error) {
 	if err != nil {
 		return []Video{}, err
 	}
+	defer vRows.Close()
 	var vs []Video
 	for vRows.Next() {
 		var v Video

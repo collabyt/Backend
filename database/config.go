@@ -1,19 +1,14 @@
 package database
 
-var (
-	// DbHost is the Postgres Host
-	DbHost = "localhost"
-	// DbUser is the Postgres username
-	DbUser = "postgres"
-	// DbPassword is the password to db
-	DbPassword = "postgres"
-	// DbDatabase is the name of the database
-	DbDatabase = "collabyt"
-	// DbPort is the post open in the postgres server
-	DbPort = "5432"
+import "os"
 
-	// DbSsl is the should ssl be active or not
-	DbSsl = "disable"
-	// DbSource is the Source of the database
-	DbSource = "postgres"
+var (
+	dbHost     = os.Getenv("DB_HOST")
+	dbUser     = os.Getenv("DB_USER")
+	dbPassword = os.Getenv("DB_PASSWORD")
+	dbDatabase = os.Getenv("DB_DATABASE")
+	dbPort     = os.Getenv("DB_PORT")
+
+	dbSsl    = os.Getenv("DB_SSL")
+	dbSource = os.Getenv("DB_SOURCE")
 )

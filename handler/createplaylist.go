@@ -19,7 +19,7 @@ func CreatePlaylist(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	playlist, err = model.CreatePlaylist(database.DB, playlist)
+	playlist, err = model.CreatePlaylist(database.Db, playlist)
 	if err != nil {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return

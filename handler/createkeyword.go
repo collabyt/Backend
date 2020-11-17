@@ -19,15 +19,12 @@ func CreateKeyword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(word.Word) < 2 {
-		WriteErrorReply(
-			w,
-			http.StatusBadRequest,
-		)
+		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	word, err = model.CreateKeyword(database.DB, word.Word)
+	word, err = model.CreateKeyword(database.Db, word.Word)
 	if err != nil {
-		WriteErrorReply(w, http.StatusBadRequest)
+		WriteErrorReply(w, http.StatusConflict)
 		return
 	}
 	jsonResponse, _ := json.Marshal(word)

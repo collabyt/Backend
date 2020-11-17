@@ -22,10 +22,7 @@ func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if limit > 25 {
-		WriteErrorReply(
-			w,
-			http.StatusBadRequest,
-		)
+		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
 	offsetSlc, ok := r.URL.Query()["offset"]
@@ -37,7 +34,7 @@ func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
 			offset = 0
 		}
 	}
-	ps, err := model.GetPublicPlaylistsByLimitAndOffset(database.DB, limit, offset)
+	ps, err := model.GetPublicPlaylistsByLimitAndOffset(database.Db, limit, offset)
 	if err != nil {
 		WriteErrorReply(w, http.StatusInternalServerError)
 		return
