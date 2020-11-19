@@ -13,7 +13,7 @@ import (
 )
 
 func SetupServer(r *mux.Router) (http.Server, error) {
-	address := os.Getenv("APP_PORT")
+	address := fmt.Sprintf("%s:%s", os.Getenv("APP_ADDRESS"), os.Getenv("APP_PORT"))
 	handler := limiter.Limit(cache.Cache, r)
 	idleTimeout, err := strconv.Atoi(os.Getenv("APP_IDLE_TIMEOUT"))
 	if err != nil {
