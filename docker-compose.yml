@@ -2,22 +2,19 @@ version: '3.3'
 services:
   dbserver:
     image: collabyt-database:initial
-    restart: always
     volumes: 
       - "/docker_volumes/collabyt/postgres:/var/lib/postgresql/data"
   cacheserver:
     image: redis
-    restart: always
   backend:
     image: collabyt-backend:initial
-    restart: always
     depends_on:
       - "dbserver"
       - "cacheserver"
     ports: 
       - 8080:8080
     environment: 
-      - "APP_HOST=0.0.0.0"
+      - "APP_ADDRESS=0.0.0.0"
       - "APP_PORT=8080"
       - "APP_IDLE_TIMEOUT=120"
       - "APP_READ_TIMEOUT=5"

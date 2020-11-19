@@ -9,6 +9,7 @@ COPY go.sum .
 RUN go mod download
 COPY . .
 
+ENV APP_ADDRESS 0.0.0.0
 ENV APP_PORT 8080
 ENV APP_IDLE_TIMEOUT 120
 ENV APP_READ_TIMEOUT 5
@@ -29,3 +30,5 @@ ENV CACHE_PASSWORD ""
 
 RUN go build
 CMD ["./Backend"]
+
+EXPOSE 8080
