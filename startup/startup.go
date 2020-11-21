@@ -27,11 +27,12 @@ func SetupServer(r *mux.Router) (http.Server, error) {
 	if err != nil {
 		return http.Server{}, fmt.Errorf("server stup faile: impossible to get %s from system's parameters", "APP_WRITE_TIMEOUT")
 	}
+
 	return http.Server{
 		Addr:         address,
 		Handler:      handler,
-		IdleTimeout:  time.Duration(idleTimeout),
-		ReadTimeout:  time.Duration(readTimeout),
-		WriteTimeout: time.Duration(writeTimeout),
+		IdleTimeout:  time.Duration(idleTimeout) * time.Second,
+		ReadTimeout:  time.Duration(readTimeout) * time.Second,
+		WriteTimeout: time.Duration(writeTimeout) * time.Second,
 	}, err
 }
