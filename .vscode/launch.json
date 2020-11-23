@@ -10,7 +10,24 @@
                         "request": "launch",
                         "mode": "auto",
                         "program": "main.go",
-                        "env": {},
+                        "env": {
+                                "APP_ADDRESS": "localhost",
+                                "APP_PORT": "8080",
+                                "APP_IDLE_TIMEOUT": "120",
+                                "APP_READ_TIMEOUT": "5",
+                                "APP_WRITE_TIMEOUT": "5",
+                                "DB_HOST": "localhost",
+                                "DB_USER": "postgres",
+                                "DB_PASSWORD": "postgres",
+                                "DB_DATABASE": "collabyt",
+                                "DB_PORT": "5432",
+                                "DB_SSL": "disable",
+                                "DB_SOURCE": "postgres",
+                                "CACHE_TTL": "60",
+                                "CACHE_HOST": "localhost",
+                                "CACHE_PORT": "6379",
+                                "CACHE_PASSWORD": ""
+                        },
                         "args": []
                 }
         ]

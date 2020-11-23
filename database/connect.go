@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	// _ postgres drive
 	_ "github.com/lib/pq"
@@ -25,6 +26,7 @@ func Connect() {
 		dbDatabase,
 		dbSsl,
 	)
+	log.Println("Attempting to connect to the PostgreSQL Database")
 	db, err := sql.Open(dbSource, dbInfo)
 	if err != nil {
 		panic(err)

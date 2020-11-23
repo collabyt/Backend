@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  dbserver:
+    image: collabyt-database:initial
+    volumes: 
+      - "/docker_volumes/collabyt/postgres:/var/lib/postgresql/data"
+  cacheserver:
+    image: redis
+  backend:
+    image: collabyt-backend:initial
+    depends_on:
+      - "dbserver"
+      - "cacheserver"
+    ports: 
+      - 8080:8080
+    environment: 
+      - "APP_ADDRESS=0.0.0.0"
+      - "APP_PORT=8080"
+      - "APP_IDLE_TIMEOUT=120"
+      - "APP_READ_TIMEOUT=5"
+      - "APP_WRITE_TIMEOUT=5"
+      - "DB_HOST=dbserver"
+      - "DB_USER=postgres"
+      - "DB_PASSWORD=postgres"
+      - "DB_DATABASE=collabyt"
+      - "DB_PORT=5432"
+      - "DB_SSL=disable"
+      - "DB_SOURCE=postgres"
+      - "CACHE_TTL=60"
+      - "CACHE_HOST=cacheserver"
+      - "CACHE_PORT=6379"
+      - "CACHE_PASSWORD="

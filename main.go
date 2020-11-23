@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/collabyt/Backend/cache"
@@ -13,8 +14,10 @@ import (
 func main() {
 	// Database connection pool
 	database.Connect()
+	log.Println("Server connected to the PostgreSQL Database")
 	// Document database connection client
 	cache.Connect()
+	log.Println("Server connected to the REDIS Cache")
 
 	// API routes
 	r := mux.NewRouter()
@@ -39,8 +42,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	log.Println("http.Server successfully created")
+
 	err = server.ListenAndServe()
 	if err != nil {
 		panic(err)
 	}
+	log.Println("Server running and accepting connections...")
 }
