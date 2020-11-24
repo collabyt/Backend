@@ -13,6 +13,8 @@ services:
       - "cacheserver"
     ports: 
       - 8080:8080
+    volumes:
+      - "/docker_volumes/collabyt/collabyt-backend:/app/logs"
     environment: 
       - "CORS_ADDRESS=localhost"
       - "CORS_PORT=9000"
