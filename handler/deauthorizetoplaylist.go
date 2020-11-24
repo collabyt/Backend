@@ -9,6 +9,7 @@ import (
 
 // DeauthorizeToPlaylist set the cookie related to the given playlist to expire
 func DeauthorizeToPlaylist(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement hit log
 	w.Header().Set("Content-Type", "application/json")
 	playlistID, err := fetchVars(r, "PublicID")
 	if err != nil {

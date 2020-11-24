@@ -11,6 +11,7 @@ import (
 // CreateVideoInPlaylist Insert a video in a given playlist if the user has
 // access to do so
 func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement hit log
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {

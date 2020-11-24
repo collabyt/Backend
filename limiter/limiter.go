@@ -33,7 +33,7 @@ func Limit(rClient *redis.Client, next http.Handler) http.Handler {
 			handler.WriteErrorReply(w, http.StatusTooManyRequests)
 			return
 		}
-		fmt.Println("allowed", rRet.Allowed, "remaining", rRet.Remaining)
+		fmt.Println("allowed", rRet.Allowed, "remaining", rRet.Remaining) //TODO: Implement log message instead of println
 		next.ServeHTTP(w, r)
 	})
 }

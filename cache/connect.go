@@ -31,7 +31,9 @@ func Connect() {
 	_, err = rClient.Ping(ctx).Result()
 	if err != nil {
 		panic(err)
+		// TODO: Implement REDIS connection fail log
 	}
+
 	_ = rClient.FlushDB(ctx).Err()
 	Cache = rClient
 }

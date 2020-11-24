@@ -8,6 +8,7 @@ import (
 )
 
 func generateNewSession(size int, id int) (model.Session, error) {
+	// TODO: Implement new session created log
 	randomBytes := make([]byte, size)
 	_, err := rand.Read(randomBytes)
 	var es model.Session

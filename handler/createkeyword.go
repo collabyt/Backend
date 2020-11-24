@@ -11,6 +11,7 @@ import (
 // CreateKeyword insert a new keyword to the database, if it already exists,
 // returns the existing one.
 func CreateKeyword(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement hit log
 	w.Header().Set("Content-Type", "application/json")
 	var word model.Keyword
 	err := json.NewDecoder(r.Body).Decode(&word)

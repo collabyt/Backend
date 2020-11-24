@@ -7,17 +7,21 @@ import (
 	"github.com/collabyt/Backend/cache"
 	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/handler"
+	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/startup"
 	"github.com/gorilla/mux"
 )
 
 func main() {
+	// initializing Application Logs
+	logger.Setup()
 	// Database connection pool
 	database.Connect()
 	log.Println("Server connected to the PostgreSQL Database")
-	// Document database connection client
+	// TODO: Implement POSTGRES connection successfully log
 	cache.Connect()
 	log.Println("Server connected to the REDIS Cache")
+	// TODO: Implement REDIS connection successfully log
 
 	// API routes
 	r := mux.NewRouter()
@@ -43,10 +47,12 @@ func main() {
 		panic(err)
 	}
 	log.Println("http.Server successfully created")
+	// TODO: Implement initialization error log
 
 	err = server.ListenAndServe()
 	if err != nil {
 		panic(err)
 	}
 	log.Println("Server running and accepting connections...")
+	// TODO: Implement successful start log
 }
