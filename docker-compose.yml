@@ -14,6 +14,8 @@ services:
     ports: 
       - 8080:8080
     environment: 
+      - "CORS_ADDRESS=localhost"
+      - "CORS_PORT=9000"
       - "APP_ADDRESS=0.0.0.0"
       - "APP_PORT=8080"
       - "APP_IDLE_TIMEOUT=120"
