@@ -7,7 +7,7 @@ services:
   cacheserver:
     image: redis
   backend:
-    image: collabyt-backend:initial
+    image: collabyt-backend:latest
     depends_on:
       - "dbserver"
       - "cacheserver"

@@ -13,15 +13,10 @@ import (
 )
 
 func main() {
-	// initializing Application Logs
 	logger.Setup()
-	// Database connection pool
 	database.Connect()
-	log.Println("Server connected to the PostgreSQL Database")
-	// TODO: Implement POSTGRES connection successfully log
 	cache.Connect()
 	log.Println("Server connected to the REDIS Cache")
-	// TODO: Implement REDIS connection successfully log
 
 	// API routes
 	r := mux.NewRouter()
@@ -44,15 +39,13 @@ func main() {
 
 	server, err := startup.SetupServer(r)
 	if err != nil {
+		logger.Error.Println(err.Error())
 		panic(err)
 	}
-	log.Println("http.Server successfully created")
-	// TODO: Implement initialization error log
-
+	logger.Info.Println("Attempting to initialize web server...")
 	err = server.ListenAndServe()
 	if err != nil {
+		logger.Error.Println("Failed to initialize server")
 		panic(err)
 	}
-	log.Println("Server running and accepting connections...")
-	// TODO: Implement successful start log
 }

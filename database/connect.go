@@ -3,9 +3,9 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
 	// _ postgres drive
+	"github.com/collabyt/Backend/logger"
 	_ "github.com/lib/pq"
 )
 
@@ -26,14 +26,17 @@ func Connect() {
 		dbDatabase,
 		dbSsl,
 	)
-	log.Println("Attempting to connect to the PostgreSQL Database")
+	logger.Info.Println("Trying to connect to PostgreSQL database...")
 	db, err := sql.Open(dbSource, dbInfo)
 	if err != nil {
+		logger.Error.Println("Connection to PostgreSQL database failed!")
 		panic(err)
 	}
 	err = db.Ping()
 	if err != nil {
+		logger.Error.Println("Connection to PostgreSQL database failed!")
 		panic(err)
 	}
 	Db = db
+	logger.Info.Println("Successfully connected to PostgreSQL database")
 }
