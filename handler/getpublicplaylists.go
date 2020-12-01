@@ -41,6 +41,9 @@ func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusInternalServerError)
 		return
 	}
+	if len(ps) < 1 {
+		ps = make([]model.Playlist, 0)
+	}
 	jsonResponse, _ := json.Marshal(ps)
 	w.Write(jsonResponse)
 }

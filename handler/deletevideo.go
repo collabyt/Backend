@@ -13,7 +13,7 @@ import (
 // DeleteVideo this is the handler that takes care of the hability to delete a
 // given video from a specific playlist
 func DeleteVideo(w http.ResponseWriter, r *http.Request) {
-	logger.Warning.Printf("HIT! Method DELETE Endpoint:/api/v1/playlists/{PublicID}/videos/{VideoID} from Client %s", r.RemoteAddr)
+	logger.Info.Printf("HIT! Method DELETE Endpoint:/api/v1/playlists/{PublicID}/videos/{VideoID} from Client %s", r.RemoteAddr)
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
