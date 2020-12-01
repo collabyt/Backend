@@ -11,6 +11,7 @@ import (
 // GetKeywords return a list of (max 10) keywords to be used as part of a new
 // playlist
 func GetKeywords(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement hit log
 	w.Header().Set("Content-Type", "application/json")
 	addressParams := r.URL.Query()
 	if len(addressParams["likewise"]) < 1 || len(addressParams["likewise"][0]) < 2 {

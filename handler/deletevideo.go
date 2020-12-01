@@ -12,6 +12,7 @@ import (
 // DeleteVideo this is the handler that takes care of the hability to delete a
 // given video from a specific playlist
 func DeleteVideo(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement hit log
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {

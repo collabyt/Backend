@@ -17,5 +17,7 @@ func WriteErrorReply(w http.ResponseWriter, httpCode int) {
 			Description: http.StatusText(httpCode),
 		},
 	)
+	// TODO: Implement error log
 	w.Write(errRet)
+
 }

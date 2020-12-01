@@ -10,6 +10,7 @@ import (
 
 // RequestAccessToPlaylist authorize or deny access to a given playlist.
 func RequestAccessToPlaylist(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement hit log
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
@@ -39,5 +40,6 @@ func RequestAccessToPlaylist(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		WriteErrorReply(w, http.StatusUnauthorized)
 	}
+	// TODO: Implement access granted log
 	w.Write(jsonPlaylist)
 }

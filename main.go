@@ -7,15 +7,14 @@ import (
 	"github.com/collabyt/Backend/cache"
 	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/handler"
+	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/startup"
 	"github.com/gorilla/mux"
 )
 
 func main() {
-	// Database connection pool
+	logger.Setup()
 	database.Connect()
-	log.Println("Server connected to the PostgreSQL Database")
-	// Document database connection client
 	cache.Connect()
 	log.Println("Server connected to the REDIS Cache")
 
@@ -40,13 +39,13 @@ func main() {
 
 	server, err := startup.SetupServer(r)
 	if err != nil {
+		logger.Error.Println(err.Error())
 		panic(err)
 	}
-	log.Println("http.Server successfully created")
-
+	logger.Info.Println("Attempting to initialize web server...")
 	err = server.ListenAndServe()
 	if err != nil {
+		logger.Error.Println("Failed to initialize server")
 		panic(err)
 	}
-	log.Println("Server running and accepting connections...")
 }

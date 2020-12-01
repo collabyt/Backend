@@ -11,6 +11,7 @@ import (
 
 // GetPublicPlaylists returns a list of playlist based on the Limit and offset.
 func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement hit log
 	w.Header().Set("Content-Type", "application/json")
 	limitSlc, ok := r.URL.Query()["limit"]
 	limit := 10

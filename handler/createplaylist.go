@@ -12,6 +12,7 @@ import (
 // CreatePlaylist Insert a new playlist in the database based on the data
 // delivered in JSON format.
 func CreatePlaylist(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement hit log
 	w.Header().Set("Content-Type", "application/json")
 	var playlist model.Playlist
 	err := json.NewDecoder(r.Body).Decode(&playlist)

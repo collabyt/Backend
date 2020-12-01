@@ -10,5 +10,6 @@ require (
 	github.com/lib/pq v1.3.0
 	github.com/onsi/ginkgo v1.14.2 // indirect
 	github.com/onsi/gomega v1.10.3 // indirect
+	github.com/rs/cors v1.7.0
 	golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de
 )

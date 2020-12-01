@@ -10,6 +10,7 @@ import (
 
 // GetPlaylistByPublicID returns a given playlist by it's public ID.
 func GetPlaylistByPublicID(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement hit log
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
