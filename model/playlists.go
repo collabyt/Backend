@@ -34,11 +34,11 @@ func GetPublicPlaylistsByLimitAndOffset(db *sql.DB, limit int, offset int) ([]Pl
 		if err != nil {
 			return []Playlist{}, err
 		}
-		p.Words, err = GetKeywordsByPlaylistID(db, p.ID)
+		p.Keywords, err = GetKeywordsByPlaylistID(db, p.ID)
 		if err != nil {
 			return []Playlist{}, err
 		}
-		p.Playlist, err = GetVideosByPlaylistID(db, p.ID)
+		p.Videos, err = GetVideosByPlaylistID(db, p.ID)
 		if err != nil {
 			return []Playlist{}, err
 		}

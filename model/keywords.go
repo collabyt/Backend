@@ -2,6 +2,7 @@ package model
 
 import (
 	"database/sql"
+	"fmt"
 )
 
 // GetKeywordsByPartialWord returns a list of keyword with a maximum amount of 10.
@@ -33,9 +34,9 @@ func GetKeywordsByID(db *sql.DB, ids []int) ([]Keyword, error) {
 	var formattedIDsList string
 	for _, id := range ids {
 		if formattedIDsList != "" {
-			formattedIDsList += ", " + string(id)
+			formattedIDsList += ", " + fmt.Sprint(id)
 		} else {
-			formattedIDsList += string(id)
+			formattedIDsList += fmt.Sprint(id)
 		}
 	}
 	formattedIDsList = "(" + formattedIDsList + ")"

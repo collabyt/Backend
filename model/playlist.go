@@ -15,8 +15,8 @@ type Playlist struct {
 	Name       string    `json:"name,omitempty"`
 	IsPublic   bool      `json:"public,omitempty"`
 	Passphrase string    `json:"passphrase,omitempty"`
-	Words      []Keyword `json:"keywords"`
-	Playlist   []Video   `json:"videos"`
+	Keywords   []Keyword `json:"keywords,omitempty"`
+	Videos     []Video   `json:"videos,omitempty"`
 }
 
 // GetPlaylistByPublicID returns a single playlist including all it's videos
@@ -40,11 +40,11 @@ func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
 	if err != nil {
 		return Playlist{}, err
 	}
-	p.Playlist, err = GetVideosByPlaylistID(db, p.ID)
+	p.Videos, err = GetVideosByPlaylistID(db, p.ID)
 	if err != nil {
 		return p, err
 	}
-	p.Words, err = GetKeywordsByPlaylistID(db, p.ID)
+	p.Keywords, err = GetKeywordsByPlaylistID(db, p.ID)
 	if err != nil {
 		return p, err
 	}
@@ -82,14 +82,19 @@ func CreatePlaylist(db *sql.DB, playlist Playlist) (Playlist, error) {
 	if err != nil {
 		return Playlist{}, err
 	}
-	err = CreateKeywordsRelation(db, playlist.ID, playlist.Words)
+	err = CreateKeywordsRelation(db, playlist.ID, playlist.Keywords)
 	if err != nil {
 		return Playlist{}, err
 	}
-	err = CreateVideosFromPlaylist(db, playlist.ID, playlist.Playlist)
+	err = CreateVideosFromPlaylist(db, playlist.ID, playlist.Videos)
 	if err != nil {
 		return Playlist{}, err
 	}
+	playlist.ID = 0
 	playlist.Passphrase = "SECRET"
+	if !playlist.IsPublic {
+		playlist.Videos = []Video{}
+		playlist.Keywords = []Keyword{}
+	}
 	return playlist, nil
 }

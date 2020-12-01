@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
@@ -26,6 +25,10 @@ func CreatePlaylist(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	http.Redirect(w, r, fmt.Sprintf("/api/v1/playlists/%s", playlist.PublicID), http.StatusSeeOther)
-	return
+	jsonPlaylist, err := json.Marshal(playlist)
+	if err != nil {
+		WriteErrorReply(w, http.StatusInternalServerError)
+		return
+	}
+	w.Write(jsonPlaylist)
 }
