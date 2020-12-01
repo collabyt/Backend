@@ -6,13 +6,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/model"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func hasCookie(cook *http.Cookie) ([]byte, error) {
-	s, err := model.GetSessionBySessionID(database.Db, cook.Value)
+	s, err := model.GetSessionBySessionID(cook.Value)
 	if err != nil {
 		return []byte{}, err
 	}
@@ -20,7 +19,7 @@ func hasCookie(cook *http.Cookie) ([]byte, error) {
 	if s == es {
 		cook.MaxAge = -1
 	}
-	playlist, err := model.GetPlaylistByPublicID(database.Db, cook.Name)
+	playlist, err := model.GetPlaylistByPublicID(cook.Name)
 	if err != nil {
 		return []byte{}, err
 	}
@@ -34,7 +33,7 @@ func noCookie(a model.Auth) (http.Cookie, int, error) {
 			http.StatusUnauthorized,
 			fmt.Errorf("Invalid Public ID")
 	}
-	ps, err := model.GetPlaylistByPublicID(database.Db, a.PublicID)
+	ps, err := model.GetPlaylistByPublicID(a.PublicID)
 	if err != nil {
 		return http.Cookie{},
 			http.StatusUnauthorized, err
@@ -55,7 +54,7 @@ func noCookie(a model.Auth) (http.Cookie, int, error) {
 			fmt.Errorf("Something wrong happened")
 	}
 
-	err = model.CreateSession(database.Db, s)
+	err = model.CreateSession(s)
 	if err != nil {
 		return http.Cookie{},
 			http.StatusInternalServerError,

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
@@ -31,7 +30,7 @@ func RequestAccessToPlaylist(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		http.SetCookie(w, &newCookie)
-		playlist, _ := model.GetPlaylistByPublicID(database.Db, newCookie.Name)
+		playlist, _ := model.GetPlaylistByPublicID(newCookie.Name)
 		playlist.Passphrase = ""
 		jasonPlaylist, _ := json.Marshal(playlist)
 		w.Write(jasonPlaylist)

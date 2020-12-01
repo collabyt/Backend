@@ -1,6 +1,8 @@
 package model
 
-import "database/sql"
+import (
+	"github.com/collabyt/Backend/database"
+)
 
 // Session is the structure of a valid session in the database or cookie
 type Session struct {
@@ -9,8 +11,8 @@ type Session struct {
 }
 
 // GetSessionBySessionID get the session from their base64 string
-func GetSessionBySessionID(db *sql.DB, id string) (Session, error) {
-	row := db.QueryRow(
+func GetSessionBySessionID(id string) (Session, error) {
+	row := database.Db.QueryRow(
 		`SELECT 
 			playlist_id, session_id
 		FROM 
@@ -29,9 +31,9 @@ func GetSessionBySessionID(db *sql.DB, id string) (Session, error) {
 
 // CreateSession stores in the database the created session for further database
 // validation
-func CreateSession(db *sql.DB, s Session) error {
+func CreateSession(s Session) error {
 	var err error
-	_, err = db.Exec(
+	_, err = database.Db.Exec(
 		`INSERT INTO public."session"
 			(playlist_id, session_id)
 		VALUES
@@ -44,8 +46,8 @@ func CreateSession(db *sql.DB, s Session) error {
 
 // DeleteSessionBySessionID erase from the database the Session by it's session
 // ID string.
-func DeleteSessionBySessionID(db *sql.DB, sessionID string) error {
-	_, err := db.Exec(
+func DeleteSessionBySessionID(sessionID string) error {
+	_, err := database.Db.Exec(
 		`DELETE FROM public."session"
 		WHERE session_id=$1`,
 		sessionID,

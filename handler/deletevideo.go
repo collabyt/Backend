@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
@@ -19,7 +18,7 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		WriteErrorReply(w, http.StatusBadRequest)
 	}
-	playlist, err := model.GetPlaylistByPublicID(database.Db, publicID)
+	playlist, err := model.GetPlaylistByPublicID(publicID)
 	if err != nil {
 		WriteErrorReply(w, http.StatusNotFound)
 		return
@@ -35,7 +34,7 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	ok := model.DeleteVideo(database.Db, v)
+	ok := model.DeleteVideo(v)
 	if !ok {
 		WriteErrorReply(w, http.StatusInternalServerError)
 		return

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
@@ -20,7 +19,7 @@ func CreatePlaylist(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	playlist, err = model.CreatePlaylist(database.Db, playlist)
+	playlist, err = model.CreatePlaylist(playlist)
 	if err != nil {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return

@@ -2,9 +2,9 @@ package model
 
 import (
 	"crypto/rand"
-	"database/sql"
 	"encoding/base64"
 
+	"github.com/collabyt/Backend/database"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -21,8 +21,8 @@ type Playlist struct {
 
 // GetPlaylistByPublicID returns a single playlist including all it's videos
 // and keywords.
-func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
-	pRow := db.QueryRow(
+func GetPlaylistByPublicID(publicID string) (Playlist, error) {
+	pRow := database.Db.QueryRow(
 		`SELECT 
 			id,
 			public_id,
@@ -40,11 +40,11 @@ func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
 	if err != nil {
 		return Playlist{}, err
 	}
-	p.Videos, err = GetVideosByPlaylistID(db, p.ID)
+	p.Videos, err = GetVideosByPlaylistID(p.ID)
 	if err != nil {
 		return p, err
 	}
-	p.Keywords, err = GetKeywordsByPlaylistID(db, p.ID)
+	p.Keywords, err = GetKeywordsByPlaylistID(p.ID)
 	if err != nil {
 		return p, err
 	}
@@ -52,7 +52,7 @@ func GetPlaylistByPublicID(db *sql.DB, publicID string) (Playlist, error) {
 }
 
 // CreatePlaylist create a new playlist, either public or private
-func CreatePlaylist(db *sql.DB, playlist Playlist) (Playlist, error) {
+func CreatePlaylist(playlist Playlist) (Playlist, error) {
 	pass, err := bcrypt.GenerateFromPassword(
 		[]byte(playlist.Passphrase),
 		bcrypt.DefaultCost,
@@ -68,7 +68,7 @@ func CreatePlaylist(db *sql.DB, playlist Playlist) (Playlist, error) {
 		return Playlist{}, err
 	}
 	playlist.PublicID = base64.URLEncoding.EncodeToString(randomBytes)
-	row := db.QueryRow(
+	row := database.Db.QueryRow(
 		`INSERT INTO public.playlist
 		(public_id, "name", is_public, passphrase)
 		VALUES($1, $2, $3, $4)
@@ -82,11 +82,11 @@ func CreatePlaylist(db *sql.DB, playlist Playlist) (Playlist, error) {
 	if err != nil {
 		return Playlist{}, err
 	}
-	err = CreateKeywordsRelation(db, playlist.ID, playlist.Keywords)
+	err = CreateKeywordsRelation(playlist.ID, playlist.Keywords)
 	if err != nil {
 		return Playlist{}, err
 	}
-	err = CreateVideosFromPlaylist(db, playlist.ID, playlist.Videos)
+	err = CreateVideosFromPlaylist(playlist.ID, playlist.Videos)
 	if err != nil {
 		return Playlist{}, err
 	}

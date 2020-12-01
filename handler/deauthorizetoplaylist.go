@@ -3,7 +3,6 @@ package handler
 import (
 	"net/http"
 
-	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
@@ -23,7 +22,7 @@ func DeauthorizeToPlaylist(w http.ResponseWriter, r *http.Request) {
 	}
 	cook.MaxAge = -1
 	http.SetCookie(w, cook)
-	err = model.DeleteSessionBySessionID(database.Db, cook.Value)
+	err = model.DeleteSessionBySessionID(cook.Value)
 	if err != nil {
 		WriteErrorReply(w, http.StatusInternalServerError)
 		return

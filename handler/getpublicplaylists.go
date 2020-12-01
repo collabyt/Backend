@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
@@ -36,7 +35,7 @@ func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
 			offset = 0
 		}
 	}
-	ps, err := model.GetPublicPlaylistsByLimitAndOffset(database.Db, limit, offset)
+	ps, err := model.GetPublicPlaylistsByLimitAndOffset(limit, offset)
 	if err != nil {
 		WriteErrorReply(w, http.StatusInternalServerError)
 		return

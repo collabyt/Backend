@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
@@ -19,7 +18,7 @@ func GetKeywords(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	wordList, err := model.GetKeywordsByPartialWord(database.Db, addressParams["likewise"][0])
+	wordList, err := model.GetKeywordsByPartialWord(addressParams["likewise"][0])
 	if err != nil {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return

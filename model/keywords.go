@@ -1,13 +1,14 @@
 package model
 
 import (
-	"database/sql"
 	"fmt"
+
+	"github.com/collabyt/Backend/database"
 )
 
 // GetKeywordsByPartialWord returns a list of keyword with a maximum amount of 10.
-func GetKeywordsByPartialWord(db *sql.DB, partWord string) ([]Keyword, error) {
-	rows, err := db.Query(
+func GetKeywordsByPartialWord(partWord string) ([]Keyword, error) {
+	rows, err := database.Db.Query(
 		`SELECT id, word FROM keyword 
 		WHERE  word LIKE $1 
 		ORDER BY word 
@@ -30,7 +31,7 @@ func GetKeywordsByPartialWord(db *sql.DB, partWord string) ([]Keyword, error) {
 
 // GetKeywordsByID Given a slice of id's, this will return a list a keywords
 // with all keyword from such slice.
-func GetKeywordsByID(db *sql.DB, ids []int) ([]Keyword, error) {
+func GetKeywordsByID(ids []int) ([]Keyword, error) {
 	var formattedIDsList string
 	for _, id := range ids {
 		if formattedIDsList != "" {
@@ -40,7 +41,7 @@ func GetKeywordsByID(db *sql.DB, ids []int) ([]Keyword, error) {
 		}
 	}
 	formattedIDsList = "(" + formattedIDsList + ")"
-	rows, err := db.Query(
+	rows, err := database.Db.Query(
 		`SELECT id, word FROM keyword WHERE id IN $1;`,
 		formattedIDsList,
 	)
@@ -58,8 +59,8 @@ func GetKeywordsByID(db *sql.DB, ids []int) ([]Keyword, error) {
 
 // GetKeywordsByPlaylistID get all keywords that are associated with a given
 // Playlist
-func GetKeywordsByPlaylistID(db *sql.DB, playlistID int) ([]Keyword, error) {
-	kRows, err := db.Query(
+func GetKeywordsByPlaylistID(playlistID int) ([]Keyword, error) {
+	kRows, err := database.Db.Query(
 		`SELECT 
 			k.id,
 			k.word

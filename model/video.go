@@ -1,8 +1,9 @@
 package model
 
 import (
-	"database/sql"
 	"fmt"
+
+	"github.com/collabyt/Backend/database"
 )
 
 // Video refers to a video, which is a part of a playlist
@@ -16,8 +17,8 @@ type Video struct {
 
 // CreateVideoInPlaylist Creates a video in the database including it's relation
 // with the playlist to which the video belongs.
-func CreateVideoInPlaylist(db *sql.DB, v Video) (Video, bool) {
-	row := db.QueryRow(
+func CreateVideoInPlaylist(v Video) (Video, bool) {
+	row := database.Db.QueryRow(
 		`INSERT INTO public.video
 		(name, link, unique_id, playlist_id)
 		VALUES($1, $2, $3, $4)
@@ -35,8 +36,8 @@ func CreateVideoInPlaylist(db *sql.DB, v Video) (Video, bool) {
 // DeleteVideo deletes a video from the database. For it to work, it must
 // be part of a specific playlist. Returns ok if entry was found and deleted
 // without problems.
-func DeleteVideo(db *sql.DB, v Video) bool {
-	_, err := db.Exec(
+func DeleteVideo(v Video) bool {
+	_, err := database.Db.Exec(
 		`DELETE FROM public.video
 		WHERE id = $1 AND playlist_id = $2;`,
 		v.ID,

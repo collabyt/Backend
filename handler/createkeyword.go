@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/collabyt/Backend/database"
 	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
@@ -34,7 +33,7 @@ func CreateKeyword(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
-	word, err = model.CreateKeyword(database.Db, word.Word)
+	word, err = model.CreateKeyword(word.Word)
 	if err != nil {
 		logger.Warning.Printf(
 			"Failed Request at Endpoint: /api/v1/keywords from Client %s: %s",
