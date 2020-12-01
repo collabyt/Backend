@@ -5,13 +5,14 @@ import (
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
+	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
 
 // CreateVideoInPlaylist Insert a video in a given playlist if the user has
 // access to do so
 func CreateVideoInPlaylist(w http.ResponseWriter, r *http.Request) {
-	// TODO: Implement hit log
+	logger.Info.Printf("HIT! Method POST Endpoint:/api/v1/playlists/{PublicID}/videos from Client %s", r.RemoteAddr)
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {

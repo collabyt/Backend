@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
 
@@ -17,7 +18,7 @@ func WriteErrorReply(w http.ResponseWriter, httpCode int) {
 			Description: http.StatusText(httpCode),
 		},
 	)
-	// TODO: Implement error log
+	logger.Error.Printf("Faulty Request: code %d, message \"%s\"", httpCode, http.StatusText(httpCode))
 	w.Write(errRet)
 
 }

@@ -6,12 +6,13 @@ import (
 	"strconv"
 
 	"github.com/collabyt/Backend/database"
+	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
 
 // GetPublicPlaylists returns a list of playlist based on the Limit and offset.
 func GetPublicPlaylists(w http.ResponseWriter, r *http.Request) {
-	// TODO: Implement hit log
+	logger.Info.Printf("HIT! Method POST Endpoint:/api/v1/playlists from Client %s", r.RemoteAddr)
 	w.Header().Set("Content-Type", "application/json")
 	limitSlc, ok := r.URL.Query()["limit"]
 	limit := 10

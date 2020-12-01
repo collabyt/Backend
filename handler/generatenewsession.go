@@ -4,11 +4,12 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 
+	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
 
 func generateNewSession(size int, id int) (model.Session, error) {
-	// TODO: Implement new session created log
+	logger.Info.Printf("New visitor session created")
 	randomBytes := make([]byte, size)
 	_, err := rand.Read(randomBytes)
 	var es model.Session

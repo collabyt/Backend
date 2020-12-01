@@ -4,12 +4,13 @@ import (
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
+	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
 
 // DeauthorizeToPlaylist set the cookie related to the given playlist to expire
 func DeauthorizeToPlaylist(w http.ResponseWriter, r *http.Request) {
-	// TODO: Implement hit log
+	logger.Warning.Printf("HIT! Method GET Endpoint:/api/v1/exit/{PublicID} from Client %s", r.RemoteAddr)
 	w.Header().Set("Content-Type", "application/json")
 	playlistID, err := fetchVars(r, "PublicID")
 	if err != nil {

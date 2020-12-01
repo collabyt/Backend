@@ -5,12 +5,13 @@ import (
 	"net/http"
 
 	"github.com/collabyt/Backend/database"
+	"github.com/collabyt/Backend/logger"
 	"github.com/collabyt/Backend/model"
 )
 
 // RequestAccessToPlaylist authorize or deny access to a given playlist.
 func RequestAccessToPlaylist(w http.ResponseWriter, r *http.Request) {
-	// TODO: Implement hit log
+	logger.Info.Printf("HIT! Method POST Endpoint:/api/v1/auth/{PublicID} from Client %s", r.RemoteAddr)
 	w.Header().Set("Content-Type", "application/json")
 	publicID, err := fetchVars(r, "PublicID")
 	if err != nil {
@@ -40,6 +41,6 @@ func RequestAccessToPlaylist(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		WriteErrorReply(w, http.StatusUnauthorized)
 	}
-	// TODO: Implement access granted log
+	logger.Info.Printf("Access granted for playlist %s for IP %s", publicID, r.RemoteAddr)
 	w.Write(jsonPlaylist)
 }
