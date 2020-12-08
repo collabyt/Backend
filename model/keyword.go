@@ -25,13 +25,3 @@ func CreateKeyword(word string) (Keyword, error) {
 	err := iRow.Scan(&k.ID, &k.Word)
 	return k, err
 }
-
-// GetKeywordByID returns a single keyword based in it's id.
-func GetKeywordByID(id int) (Keyword, error) {
-	row := database.Db.QueryRow(`SELECT id, word FROM keyword WHERE id = $1;`, id)
-	var k Keyword
-	if err := row.Scan(&k); err != nil {
-		return Keyword{}, err
-	}
-	return k, nil
-}
