@@ -82,13 +82,17 @@ func CreatePlaylist(playlist Playlist) (Playlist, error) {
 	if err != nil {
 		return Playlist{}, err
 	}
-	err = CreateKeywordsRelation(playlist.ID, playlist.Keywords)
-	if err != nil {
-		return Playlist{}, err
+	if len(playlist.Keywords) > 0 {
+		err = CreateKeywordsRelation(playlist.ID, playlist.Keywords)
+		if err != nil {
+			return Playlist{}, err
+		}
 	}
-	err = CreateVideosFromPlaylist(playlist.ID, playlist.Videos)
-	if err != nil {
-		return Playlist{}, err
+	if len(playlist.Videos) > 0 {
+		err = CreateVideosFromPlaylist(playlist.ID, playlist.Videos)
+		if err != nil {
+			return Playlist{}, err
+		}
 	}
 	playlist.ID = 0
 	playlist.Passphrase = "SECRET"
