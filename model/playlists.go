@@ -1,13 +1,11 @@
 package model
 
-import (
-	"database/sql"
-)
+import "github.com/collabyt/Backend/database"
 
 // GetPublicPlaylistsByLimitAndOffset given a limit and offset, returns a list of
 // PUBLIC playlists from the database
-func GetPublicPlaylistsByLimitAndOffset(db *sql.DB, limit int, offset int) ([]Playlist, error) {
-	pRows, err := db.Query(`
+func GetPublicPlaylistsByLimitAndOffset(limit int, offset int) ([]Playlist, error) {
+	pRows, err := database.Db.Query(`
 	SELECT 
 		id, public_id, name
 	FROM 
@@ -34,11 +32,11 @@ func GetPublicPlaylistsByLimitAndOffset(db *sql.DB, limit int, offset int) ([]Pl
 		if err != nil {
 			return []Playlist{}, err
 		}
-		p.Words, err = GetKeywordsByPlaylistID(db, p.ID)
+		p.Keywords, err = GetKeywordsByPlaylistID(p.ID)
 		if err != nil {
 			return []Playlist{}, err
 		}
-		p.Playlist, err = GetVideosByPlaylistID(db, p.ID)
+		p.Videos, err = GetVideosByPlaylistID(p.ID)
 		if err != nil {
 			return []Playlist{}, err
 		}

@@ -1,11 +1,11 @@
 version: '3.3'
 services:
   dbserver:
-    image: collabyt-database:initial
+    image: collabyt-database:latest
     volumes: 
       - "/docker_volumes/collabyt/postgres:/var/lib/postgresql/data"
   cacheserver:
-    image: redis
+    image: redis:latest
   backend:
     image: collabyt-backend:latest
     depends_on:

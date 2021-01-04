@@ -1,13 +1,13 @@
 package model
 
 import (
-	"database/sql"
+	"github.com/collabyt/Backend/database"
 )
 
 // GetVideosByPlaylistID retrieve all videos that belong to a specific playlist
 // using the id from the database.
-func GetVideosByPlaylistID(db *sql.DB, playlistID int) ([]Video, error) {
-	vRows, err := db.Query(
+func GetVideosByPlaylistID(playlistID int) ([]Video, error) {
+	vRows, err := database.Db.Query(
 		`SELECT  id, name, link, unique_id
 		FROM  public.video
 		WHERE playlist_id = $1
@@ -29,8 +29,8 @@ func GetVideosByPlaylistID(db *sql.DB, playlistID int) ([]Video, error) {
 
 // CreateVideosFromPlaylist insert into the database all the videos inserted
 // with the playlist. Returns only nil or the error received from the database.
-func CreateVideosFromPlaylist(db *sql.DB, playlistID int, vs []Video) error {
-	stmt, err := db.Prepare("INSERT INTO public.video(name, link, unique_id, playlist_id) VALUES( $1, $2, $3, $4 )")
+func CreateVideosFromPlaylist(playlistID int, vs []Video) error {
+	stmt, err := database.Db.Prepare("INSERT INTO public.video(name, link, unique_id, playlist_id) VALUES( $1, $2, $3, $4 )")
 	if err != nil {
 		return err
 	}
