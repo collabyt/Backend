@@ -23,5 +23,5 @@ func (s *Session) Login(
 	*model.Session,
 	*rendering.LoginResponse,
 ) {
-	return nil, nil
+
 }

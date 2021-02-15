@@ -1,6 +1,8 @@
 package repo
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type Playlist struct {
 	DB *sql.DB

@@ -43,14 +43,20 @@ func (s *Session) Login(
 				Reason:  "Invalid passphrase",
 			}
 	}
-	s, err := s.repo.Login(ctx, a)
-	if err != nil {
-		return &model.Session{},
-			&rendering.LoginResponse{
-				Success: false,
-				Code:    http.StatusInternalServerError,
-				Reason:  "Impossible to login",
-			}
-	}
-	return s, nil
+
+	// TODO: Login in Playlist
+	// Search Playlist by public ID, then from that search, get the playlist
+	// ID, then, use this playlist id to create a valid session to store in
+	// the database.
+	// +-------------+
+	// | session     |    +-------------+
+	// +-------------+    | playlist    |
+	// | session_id  |    +-------------|
+	// | playlist_id |----| playlist_id |
+	// +-------------+    | ...         |
+	//                    +-------------+
+	// Now that there is a valid session with a playlist_id that for sure
+	// exists, function can proceed creating the session to send to the
+	// endpoint to be transformed in a cookie.
+	return nil, nil
 }
