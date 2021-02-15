@@ -1,4 +1,4 @@
-package database
+package postgres
 
 import (
 	"database/sql"
@@ -8,14 +8,9 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var (
-	// DB is the Database connection pool
-	DB *sql.DB
-)
-
-// Connect opens a connection to the postgres database using the environment
+// NewDB opens a connection to the postgres database using the environment
 // variables.
-func Connect() {
+func NewDB() *sql.DB {
 	dbInfo := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		DbHost,
@@ -33,5 +28,5 @@ func Connect() {
 	if err != nil {
 		panic(err)
 	}
-	DB = db
+	return db
 }
