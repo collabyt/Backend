@@ -17,14 +17,15 @@ func GetPlaylistByPublicID(w http.ResponseWriter, r *http.Request) {
 		WriteErrorReply(w, http.StatusBadRequest)
 	}
 	playlist, err := model.GetPlaylistByPublicID(publicID)
-	if !playlist.IsPublic {
-		WriteErrorReply(w, http.StatusForbidden)
-		return
-	}
 	if err != nil {
 		WriteErrorReply(w, http.StatusBadRequest)
 		return
 	}
+	if !playlist.IsPublic {
+		WriteErrorReply(w, http.StatusUnauthorized)
+		return
+	}
+	playlist.Passphrase = ""
 	jsonResponse, _ := json.Marshal(playlist)
 	w.Write(jsonResponse)
 }

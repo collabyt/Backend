@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -11,18 +12,20 @@ import (
 )
 
 func hasCookie(cook *http.Cookie) ([]byte, error) {
-	s, err := model.GetSessionBySessionID(cook.Value)
+	existingSession, err := model.GetSessionBySessionID(cook.Value)
 	if err != nil {
 		return []byte{}, err
 	}
-	var es model.Session
-	if s == es {
+	var emptySession model.Session
+	if existingSession == emptySession {
 		cook.MaxAge = -1
+		return []byte{}, errors.New("expired session")
 	}
 	playlist, err := model.GetPlaylistByPublicID(cook.Name)
 	if err != nil {
 		return []byte{}, err
 	}
+	playlist.Passphrase = ""
 	jp, _ := json.Marshal(playlist)
 	return jp, nil
 }
